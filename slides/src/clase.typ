@@ -7,9 +7,9 @@
 #set text(lang: "es")
 
 #let workshop = (
-  title: "Clase ABCDEFG",
-  date: "- Cuatrimestre 20XX",
-  date-footer: "-c20XX",
+  title: "Taller de APIs (RESTful)",
+  date: "Primer Cuatrimestre 2026",
+  date-footer: "1c2026",
 )
 
 #show: codly-init.with()
@@ -20,7 +20,7 @@
   workshop.date-footer,
 )
 
-#wide-title-slide(extra: image("assets/images/comcom-sin-texto.png", height: 2cm))
+#wide-title-slide(extra: image("assets/images/comcom-sin-texto.png", height: 2.5cm))
 
 #outline-slide()
 

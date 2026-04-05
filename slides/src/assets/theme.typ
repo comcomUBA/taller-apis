@@ -146,7 +146,7 @@
             #text(
               size: 1.2em,
               fill: self.colors.neutral-lightest,
-              weight: "bold",
+              weight: "semibold",
               info.title,
             )
             #if info.subtitle != none {
