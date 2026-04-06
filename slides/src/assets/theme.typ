@@ -54,7 +54,7 @@
       codly(languages: codly-languages)
     }),
     config-methods(init: (self: none, body) => {
-      set text(size: 20pt)
+      set text(size: 26pt)
       set list(marker: box(
         width: 0.5em,
         height: 0.5em,
@@ -93,7 +93,7 @@
       neutral-darkest: ink,
     ),
     config-store(
-      footer-columns: (1fr, 2fr, 1fr, 5em),
+      footer-columns: (1fr, 1.6fr, 1fr, 5em),
       navigation: none,
       header: self => if self.store.title != none {
         block(

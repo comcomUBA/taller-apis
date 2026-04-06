@@ -16,9 +16,7 @@
 
 Texto normal con *negrita* e _itálica_.
 
-#callout-box(title: [Container con título])[
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Blah blah blah.
-]
+#callout-box(title: [Container con título])[Blah blah blah.]
 
 `Rawtext`, y ejemplo de bloque de código:
 
