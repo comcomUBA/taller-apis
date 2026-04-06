@@ -13,8 +13,7 @@
 #let default-institution = [Departamento de Computación \ FCEyN UBA]
 #let default-footer-a = [ComCom (DC - FCEyN - UBA)]
 
-
-#let box(
+#let callout-box(
   title: none,
   wide: true,
   bleed: 0em,
@@ -54,8 +53,29 @@
     config-common(preamble: {
       codly(languages: codly-languages)
     }),
+    config-methods(init: (self: none, body) => {
+      set text(size: 20pt)
+      set list(marker: box(
+        width: 0.5em,
+        height: 0.5em,
+        baseline: 0.6em,
+        fill: primaryColor,
+        stroke: none,
+      ))
+      show figure.caption: set text(size: 0.6em)
+      show footnote.entry: set text(size: 0.6em)
+      show heading: set text(fill: primaryColor)
+      show link: it => if type(it.dest) == str {
+        set text(fill: primaryColor)
+        it
+      } else {
+        it
+      }
+      show figure.where(kind: table): set figure.caption(position: top)
+      body
+    }),
     config-page(
-      paper: "presentation-16-9",
+      paper: "presentation-4-3",
       fill: rgb("#ffffff"),
       margin: (x: 3em, y: 2.8em),
     ),

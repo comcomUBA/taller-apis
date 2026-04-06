@@ -1,6 +1,6 @@
 #import "@preview/touying:0.7.0": *
 #import themes.stargazer: *
-#import "assets/theme.typ": box
+#import "assets/theme.typ": callout-box
 
 = Título 1
 
@@ -16,7 +16,7 @@
 
 Texto normal con *negrita* e _itálica_.
 
-#box(title: [Container con título])[
+#callout-box(title: [Container con título])[
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Blah blah blah.
 ]
 
@@ -28,7 +28,7 @@ fn main() {
 }
 ```
 
-#box[
+#callout-box[
   Container sin título.
 ]
 

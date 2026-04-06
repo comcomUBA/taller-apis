@@ -20,7 +20,7 @@
   workshop.date-footer,
 )
 
-#wide-title-slide(extra: image("assets/images/comcom-sin-texto.png", height: 2.5cm))
+#wide-title-slide(extra: pad(top: 30pt, image("assets/images/logo-sin-texto.min.svg", height: 3.5cm)))
 
 #outline-slide()
 
