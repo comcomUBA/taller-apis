@@ -22,6 +22,8 @@
 
 #wide-title-slide(extra: pad(top: 30pt, image("assets/images/logo-sin-texto.min.svg", height: 3.5cm)))
 
-#outline-slide()
-
-#include "diapos_de_ejemplo.typ"
+#include "slides/introduccion.typ"
+#include "slides/middlewares.typ"
+#include "slides/routes.typ"
+#include "slides/schemas.typ"
+#include "slides/recursos.typ"

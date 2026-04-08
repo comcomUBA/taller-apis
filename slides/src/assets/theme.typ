@@ -93,7 +93,7 @@
       neutral-darkest: ink,
     ),
     config-store(
-      footer-columns: (1fr, 1.6fr, 1fr, 5em),
+      footer-columns: (1fr, 2fr, 0.5fr, 0.5fr),
       navigation: none,
       header: self => if self.store.title != none {
         block(
