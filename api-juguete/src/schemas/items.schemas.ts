@@ -1,0 +1,175 @@
+import { t, type Static } from "elysia";
+
+const tags = ["Items"]; // Category tags for API documentation
+
+export const itemSchema = t.Object({
+  id: t.String({ description: "Unique identifier of the item" }),
+  value: t.String({ description: "String value stored in the item" }),
+});
+export type Item = Static<typeof itemSchema>;
+
+const itemIdParamSchema = t.Object({
+  id: t.String({ description: "Item ID" }),
+});
+export type ItemIdParams = Static<typeof itemIdParamSchema>;
+
+const itemBodySchema = t.Object({
+  value: t.String({
+    description: "String value to store",
+    examples: ["hello world"],
+  }),
+});
+export type ItemBody = Static<typeof itemBodySchema>;
+
+const notFoundResponseSchema = t.Object({
+  error: t.String(),
+});
+export type NotFoundResponse = Static<typeof notFoundResponseSchema>;
+
+const updateItemBodySchema = t.Object({
+  value: t.Optional(
+    t.String({
+      description: "New string value",
+      examples: ["updated value"],
+    }),
+  ),
+});
+export type UpdateItemBody = Static<typeof updateItemBodySchema>;
+
+const deleteItemResponseSchema = itemSchema;
+export type DeleteItemResponse = Static<typeof deleteItemResponseSchema>;
+
+/*
+  GET /items
+*/
+export const getRandomItemRouteSchema = {
+  response: {
+    200: itemSchema,
+    404: notFoundResponseSchema,
+  },
+  detail: {
+    tags,
+    summary: "Get Random Item",
+    description: "Returns a random item from the list.",
+  },
+};
+export interface GetRandomItemRouteContract {
+  response: {
+    200: Item;
+    404: NotFoundResponse;
+  };
+}
+
+export const getItemByIdRouteSchema = {
+  params: itemIdParamSchema,
+  response: {
+    200: t.String({ description: "The string value of the item" }),
+    404: notFoundResponseSchema,
+  },
+  detail: {
+    tags,
+    summary: "Get Item by ID",
+    description: "Returns the string value of the item with the given ID.",
+  },
+};
+export interface GetItemByIdRouteContract {
+  params: ItemIdParams;
+  response: {
+    200: string;
+    404: NotFoundResponse;
+  };
+}
+
+/*
+  POST /items
+*/
+export const createItemRouteSchema = {
+  body: itemBodySchema,
+  response: {
+    201: itemSchema,
+  },
+  detail: {
+    tags,
+    summary: "Create Item",
+    description: "Adds a new item with a random ID and the provided string value.",
+  },
+};
+export interface CreateItemRouteContract {
+  body: ItemBody;
+  response: {
+    201: Item;
+  };
+}
+
+/*
+  PUT /items/:id
+*/
+export const replaceItemRouteSchema = {
+  params: itemIdParamSchema,
+  body: itemBodySchema,
+  response: {
+    200: itemSchema,
+    404: notFoundResponseSchema,
+  },
+  detail: {
+    tags,
+    summary: "Replace Item",
+    description: "Replaces the string value of an existing item entirely.",
+  },
+};
+export interface ReplaceItemRouteContract {
+  params: ItemIdParams;
+  body: ItemBody;
+  response: {
+    200: Item;
+    404: NotFoundResponse;
+  };
+}
+
+/*
+  PATCH /items/:id
+*/
+export const updateItemRouteSchema = {
+  params: itemIdParamSchema,
+  body: updateItemBodySchema,
+  response: {
+    200: itemSchema,
+    404: notFoundResponseSchema,
+  },
+  detail: {
+    tags,
+    summary: "Update Item",
+    description: "Partially updates an existing item.",
+  },
+};
+export interface UpdateItemRouteContract {
+  params: ItemIdParams;
+  body: UpdateItemBody;
+  response: {
+    200: Item;
+    404: NotFoundResponse;
+  };
+}
+
+/*
+  DELETE /items/:id
+*/
+export const deleteItemRouteSchema = {
+  params: itemIdParamSchema,
+  response: {
+    200: deleteItemResponseSchema,
+    404: notFoundResponseSchema,
+  },
+  detail: {
+    tags,
+    summary: "Delete Item",
+    description: "Deletes the item with the given ID from the list.",
+  },
+};
+export interface DeleteItemRouteContract {
+  params: ItemIdParams;
+  response: {
+    200: DeleteItemResponse;
+    404: NotFoundResponse;
+  };
+}
