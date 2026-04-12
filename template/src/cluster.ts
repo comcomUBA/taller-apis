@@ -14,7 +14,7 @@ if (cluster.isPrimary) {
   cluster.on("exit", (worker, code, signal) => {
     // Only restart and log if it was an unexpected crash, not a deliberate shutdown
     if (signal !== "SIGTERM" && signal !== "SIGINT" && !worker.exitedAfterDisconnect) {
-      log.warn(`Worker died (${String(signal) || String(code)}). Restarting...`);
+      log.warn(`Worker died (${signal || String(code)}). Restarting...`);
       cluster.fork();
     }
   });
