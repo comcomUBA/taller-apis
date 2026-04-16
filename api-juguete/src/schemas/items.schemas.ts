@@ -21,10 +21,11 @@ const itemBodySchema = t.Object({
 });
 export type ItemBody = Static<typeof itemBodySchema>;
 
-const notFoundResponseSchema = t.Object({
-  error: t.String(),
-});
+const notFoundResponseSchema = t.Null();
 export type NotFoundResponse = Static<typeof notFoundResponseSchema>;
+
+const noContentResponseSchema = t.Null();
+export type NoContentResponse = Static<typeof noContentResponseSchema>;
 
 const updateItemBodySchema = t.Object({
   value: t.Optional(
@@ -38,6 +39,26 @@ export type UpdateItemBody = Static<typeof updateItemBodySchema>;
 
 const deleteItemResponseSchema = itemSchema;
 export type DeleteItemResponse = Static<typeof deleteItemResponseSchema>;
+
+/*
+export const getItemStatusSchema = {
+  response: {
+    200: noContentResponseSchema,
+    404: noContentResponseSchema,
+  },
+  detail: {
+    tags,
+    summary: "Get Status of an Item",
+    description: "Returns the HTTP status codes of an item.",
+  },
+};
+export interface GetItemStatusContract {
+  response: {
+    200: NoContentResponse;
+    404: NoContentResponse;
+  };
+}
+*/
 
 /*
   GET /items
@@ -60,6 +81,9 @@ export interface GetRandomItemRouteContract {
   };
 }
 
+/*
+  GET /items/{id}
+*/
 export const getItemByIdRouteSchema = {
   params: itemIdParamSchema,
   response: {
@@ -106,9 +130,9 @@ export interface CreateItemRouteContract {
 */
 export const replaceItemRouteSchema = {
   params: itemIdParamSchema,
-  body: itemBodySchema,
+  body: itemSchema,
   response: {
-    200: itemSchema,
+    204: noContentResponseSchema,
     404: notFoundResponseSchema,
   },
   detail: {
@@ -119,9 +143,9 @@ export const replaceItemRouteSchema = {
 };
 export interface ReplaceItemRouteContract {
   params: ItemIdParams;
-  body: ItemBody;
+  body: Item;
   response: {
-    200: Item;
+    204: NoContentResponse;
     404: NotFoundResponse;
   };
 }
@@ -133,7 +157,7 @@ export const updateItemRouteSchema = {
   params: itemIdParamSchema,
   body: updateItemBodySchema,
   response: {
-    200: itemSchema,
+    204: noContentResponseSchema,
     404: notFoundResponseSchema,
   },
   detail: {
@@ -146,7 +170,7 @@ export interface UpdateItemRouteContract {
   params: ItemIdParams;
   body: UpdateItemBody;
   response: {
-    200: Item;
+    204: NoContentResponse;
     404: NotFoundResponse;
   };
 }
@@ -157,7 +181,7 @@ export interface UpdateItemRouteContract {
 export const deleteItemRouteSchema = {
   params: itemIdParamSchema,
   response: {
-    200: deleteItemResponseSchema,
+    204: noContentResponseSchema,
     404: notFoundResponseSchema,
   },
   detail: {
@@ -169,7 +193,7 @@ export const deleteItemRouteSchema = {
 export interface DeleteItemRouteContract {
   params: ItemIdParams;
   response: {
-    200: DeleteItemResponse;
+    204: NoContentResponse;
     404: NotFoundResponse;
   };
 }

@@ -22,10 +22,11 @@ export function createItem(value: string): Item {
   return item;
 }
 
-export function replaceItem(id: string, value: string): Item | undefined {
+export function replaceItem(id: string, newId: string, newValue: string): Item | undefined {
   const item = items.find((el) => el.id === id);
   if (!item) return undefined;
-  item.value = value;
+  item.id = newId;
+  item.value = newValue;
   return item;
 }
 

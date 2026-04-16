@@ -9,13 +9,23 @@ import type {
 } from "../schemas/items.schemas";
 import * as itemsService from "../services/items.service";
 
+/*
+export const getItemStatus = ({
+  set,
+}: Context<GetItemStatusContract>): GetItemStatusContract["response"][200 | 404] => {
+  const item = itemsService.getRandomItem();
+  if (!item) set.status = 404;
+  return null;
+};
+*/
+
 export const getRandomItem = ({
   set,
 }: Context<GetRandomItemRouteContract>): GetRandomItemRouteContract["response"][200 | 404] => {
   const item = itemsService.getRandomItem();
   if (!item) {
     set.status = 404;
-    return { error: "No items in the list" };
+    return null;
   }
   return item;
 };
@@ -27,7 +37,7 @@ export const getItemById = ({
   const item = itemsService.getItemById(params.id);
   if (!item) {
     set.status = 404;
-    return { error: `Item with id '${params.id}' not found` };
+    return null;
   }
   return item.value;
 };
@@ -45,36 +55,39 @@ export const replaceItem = ({
   params,
   body,
   set,
-}: Context<ReplaceItemRouteContract>): ReplaceItemRouteContract["response"][200 | 404] => {
-  const item = itemsService.replaceItem(params.id, body.value);
+}: Context<ReplaceItemRouteContract>): ReplaceItemRouteContract["response"][204 | 404] => {
+  const item = itemsService.replaceItem(params.id, body.id, body.value);
   if (!item) {
     set.status = 404;
-    return { error: `Item with id '${params.id}' not found` };
+  } else {
+    set.status = 204;
   }
-  return item;
+  return null;
 };
 
 export const updateItem = ({
   params,
   body,
   set,
-}: Context<UpdateItemRouteContract>): UpdateItemRouteContract["response"][200 | 404] => {
+}: Context<UpdateItemRouteContract>): UpdateItemRouteContract["response"][204 | 404] => {
   const item = itemsService.updateItem(params.id, body.value);
   if (!item) {
     set.status = 404;
-    return { error: `Item with id '${params.id}' not found` };
+  } else {
+    set.status = 204;
   }
-  return item;
+  return null;
 };
 
 export const deleteItem = ({
   params,
   set,
-}: Context<DeleteItemRouteContract>): DeleteItemRouteContract["response"][200 | 404] => {
+}: Context<DeleteItemRouteContract>): DeleteItemRouteContract["response"][204 | 404] => {
   const deleted = itemsService.removeItem(params.id);
   if (!deleted) {
     set.status = 404;
-    return { error: `Item with id '${params.id}' not found` };
+  } else {
+    set.status = 204;
   }
-  return deleted;
+  return null;
 };
