@@ -17,14 +17,5 @@ export const swagger = elysiaSwagger({
         url: Bun.env.BACKEND_URL!,
       },
     ],
-    components: {
-      securitySchemes: {
-        BearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
-        },
-      },
-    },
   },
 });

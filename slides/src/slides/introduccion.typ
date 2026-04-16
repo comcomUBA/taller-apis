@@ -121,3 +121,5 @@ Hay varias formas de interactuar con una API RESTful, algunas de las más comune
 
 = Ejercitación de conceptos
 
+== Ejercicio 1: Lista anónima
+
