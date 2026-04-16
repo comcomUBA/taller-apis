@@ -22,8 +22,6 @@ Existen varios tipos de APIs, algunas son:
 
 Siendo estas últimas las más famosas, y las que nos interesarán en el transcurso del taller.
 
-= APIs RESTful
-
 == ¿Qué es una API RESTful?
 
 Las APIs RESTful son un tipo de API que sigue los #link("https://www.redhat.com/es/topics/api/what-is-a-rest-api")[principios de diseño de REST] (Representational State Transfer).
@@ -119,7 +117,17 @@ Hay varias formas de interactuar con una API RESTful, algunas de las más comune
   )
 ]
 
-= Ejercitación de conceptos
+= Interactuando con una API RESTful
 
 == Ejercicio 1: Lista anónima
+// Objetivo: familiarizarse con la documentación de la API y con las herramientas para interactuar con ella
 
+Esta API RESTful expone:
+
+- `/items`: permite solicitudes `GET` y `POST`.
+- `/items/{id}`: permite solicitudes `GET`, `PUT`, `PATCH` y `DELETE`.
+
+*Consignas:*
+- Entren a *\/docs* de la API, donde van a encontrar la documentación interactiva.
+- Vayan a #link("https://hoppscotch.io/")[#text(black)[*#underline[Hoppscotch]*]]#footnote[También pueden usar cURL o la documentación interactiva.] (va a ser necesario que instalen la extensión de Hoppscotch en el navegador).
+- Prueben los distintos verbos HTTP sobre las rutas indicadas y observen las respuestas que devuelve la API.
