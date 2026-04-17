@@ -1,5 +1,6 @@
 import cluster from "node:cluster";
 import { app } from "./app";
+import { closeRedis } from "./databases/redis";
 import { log } from "./utils/logger";
 
 app.listen(parseInt(Bun.env.PORT!), () => {
@@ -9,6 +10,7 @@ app.listen(parseInt(Bun.env.PORT!), () => {
 });
 
 const shutdown = async (): Promise<void> => {
+  await closeRedis();
   await app.stop();
   if (cluster.isPrimary) {
     log.info("Server stopped successfully.");

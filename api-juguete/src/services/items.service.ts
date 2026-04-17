@@ -1,6 +1,26 @@
-import type { Item, ItemBody } from "../schemas/items.schemas";
+import type { Item } from "../schemas/items.schemas";
+import { getRedis } from "../databases/redis";
 
-const items: Record<string, ItemBody> = {};
+const itemsKey = "items:ids";
+const itemKey = (id: string): string => `items:${id}`;
+
+async function getRandomItemFromStore(
+  client: Awaited<ReturnType<typeof getRedis>>,
+  attemptsLeft = 5,
+): Promise<Item> {
+  const id = await client.sRandMember(itemsKey);
+  if (!id) throw new NotFoundError();
+
+  const value = await client.get(itemKey(id));
+  if (value !== null) {
+    return { id, value };
+  }
+
+  await client.sRem(itemsKey, id);
+
+  if (attemptsLeft <= 1) throw new NotFoundError();
+  return getRandomItemFromStore(client, attemptsLeft - 1);
+}
 
 function generateId(): string {
   return crypto.randomUUID();
@@ -27,48 +47,73 @@ export class EmptyIdError extends Error {
   }
 }
 
-export function getRandomItem(): Item {
-  const keys = Object.keys(items);
-  if (keys.length === 0) throw new NotFoundError();
-  const index = Math.floor(Math.random() * keys.length);
-  const key = keys[index];
-  if (!key || !items[key]) throw new NotFoundError();
-  return { id: key, value: items[key].value };
+export async function getRandomItem(): Promise<Item> {
+  const client = await getRedis();
+  return getRandomItemFromStore(client);
 }
 
-export function getItemById(id: string): Item {
-  const item = items[id];
-  if (!item) throw new NotFoundError();
-  return { id, value: item.value };
-}
+export async function getItemById(id: string): Promise<Item> {
+  const client = await getRedis();
+  const value = await client.get(itemKey(id));
 
-export function createItem(value: string): Item {
-  const id = generateId();
-  const item: ItemBody = { value };
-  items[id] = item;
+  if (value === null) throw new NotFoundError();
+
   return { id, value };
 }
 
-export function replaceItem(id: string, newId: string, newValue: string): Item {
-  const item = items[id];
-  if (!item) throw new NotFoundError();
-  if (newId !== id && items[newId]) throw new ConflictError();
-  if (newId !== id) delete items[id];
-  item.value = newValue;
-  items[newId] = item;
-  return { id: newId, value: item.value };
+export async function createItem(value: string): Promise<Item> {
+  const client = await getRedis();
+  const id = generateId();
+  await client.set(itemKey(id), value);
+  await client.sAdd(itemsKey, id);
+  return { id, value };
 }
 
-export function updateItem(id: string, value?: string): Item {
-  const item = items[id];
-  if (!item) throw new NotFoundError();
-  if (value) item.value = value;
-  return { id, value: item.value };
+export async function replaceItem(id: string, newId: string, newValue: string): Promise<Item> {
+  const client = await getRedis();
+  const currentValue = await client.get(itemKey(id));
+
+  if (currentValue === null) throw new NotFoundError();
+  if (newId !== id && (await client.exists(itemKey(newId))) > 0) throw new ConflictError();
+
+  if (newId === id) {
+    await client.set(itemKey(id), newValue);
+    return { id, value: newValue };
+  }
+
+  const transaction = client.multi();
+  transaction.del(itemKey(id));
+  transaction.set(itemKey(newId), newValue);
+  transaction.sRem(itemsKey, id);
+  transaction.sAdd(itemsKey, newId);
+  await transaction.exec();
+
+  return { id: newId, value: newValue };
 }
 
-export function removeItem(id: string): Item {
-  const item = items[id];
-  if (!item) throw new NotFoundError();
-  delete items[id];
-  return { id, value: item.value };
+export async function updateItem(id: string, value?: string): Promise<Item> {
+  const client = await getRedis();
+  const currentValue = await client.get(itemKey(id));
+
+  if (currentValue === null) throw new NotFoundError();
+  if (value !== undefined) {
+    await client.set(itemKey(id), value);
+    return { id, value };
+  }
+
+  return { id, value: currentValue };
+}
+
+export async function removeItem(id: string): Promise<Item> {
+  const client = await getRedis();
+  const value = await client.get(itemKey(id));
+
+  if (value === null) throw new NotFoundError();
+
+  const transaction = client.multi();
+  transaction.del(itemKey(id));
+  transaction.sRem(itemsKey, id);
+  await transaction.exec();
+
+  return { id, value };
 }

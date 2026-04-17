@@ -19,11 +19,13 @@ export const getItemStatus = ({
 };
 */
 
-export const getRandomItem = ({
+export const getRandomItem = async ({
   set,
-}: Context<GetRandomItemRouteContract>): GetRandomItemRouteContract["response"][200 | 404] => {
+}: Context<GetRandomItemRouteContract>): Promise<
+  GetRandomItemRouteContract["response"][200 | 404]
+> => {
   try {
-    const item = itemsService.getRandomItem();
+    const item = await itemsService.getRandomItem();
     return item;
   } catch (error) {
     if (error instanceof itemsService.NotFoundError) {
@@ -36,12 +38,12 @@ export const getRandomItem = ({
   }
 };
 
-export const getItemById = ({
+export const getItemById = async ({
   params,
   set,
-}: Context<GetItemByIdRouteContract>): GetItemByIdRouteContract["response"][200 | 404] => {
+}: Context<GetItemByIdRouteContract>): Promise<GetItemByIdRouteContract["response"][200 | 404]> => {
   try {
-    const item = itemsService.getItemById(params.id);
+    const item = await itemsService.getItemById(params.id);
     return item.value;
   } catch (error) {
     if (error instanceof itemsService.NotFoundError) {
@@ -54,22 +56,24 @@ export const getItemById = ({
   }
 };
 
-export const createItem = ({
+export const createItem = async ({
   body,
   set,
-}: Context<CreateItemRouteContract>): CreateItemRouteContract["response"][201] => {
-  const item = itemsService.createItem(body.value);
+}: Context<CreateItemRouteContract>): Promise<CreateItemRouteContract["response"][201]> => {
+  const item = await itemsService.createItem(body.value);
   set.status = 201;
   return item;
 };
 
-export const replaceItem = ({
+export const replaceItem = async ({
   params,
   body,
   set,
-}: Context<ReplaceItemRouteContract>): ReplaceItemRouteContract["response"][204 | 404 | 409] => {
+}: Context<ReplaceItemRouteContract>): Promise<
+  ReplaceItemRouteContract["response"][204 | 404 | 409]
+> => {
   try {
-    itemsService.replaceItem(params.id, body.id, body.value);
+    await itemsService.replaceItem(params.id, body.id, body.value);
     set.status = 204;
   } catch (error) {
     if (error instanceof itemsService.NotFoundError) {
@@ -85,13 +89,13 @@ export const replaceItem = ({
   return null;
 };
 
-export const updateItem = ({
+export const updateItem = async ({
   params,
   body,
   set,
-}: Context<UpdateItemRouteContract>): UpdateItemRouteContract["response"][204 | 404] => {
+}: Context<UpdateItemRouteContract>): Promise<UpdateItemRouteContract["response"][204 | 404]> => {
   try {
-    itemsService.updateItem(params.id, body.value);
+    await itemsService.updateItem(params.id, body.value);
     set.status = 204;
   } catch (error) {
     if (error instanceof itemsService.NotFoundError) {
@@ -103,12 +107,12 @@ export const updateItem = ({
   return null;
 };
 
-export const deleteItem = ({
+export const deleteItem = async ({
   params,
   set,
-}: Context<DeleteItemRouteContract>): DeleteItemRouteContract["response"][204 | 404] => {
+}: Context<DeleteItemRouteContract>): Promise<DeleteItemRouteContract["response"][204 | 404]> => {
   try {
-    itemsService.removeItem(params.id);
+    await itemsService.removeItem(params.id);
     set.status = 204;
   } catch (error) {
     if (error instanceof itemsService.NotFoundError) {
