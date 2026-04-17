@@ -113,7 +113,7 @@ Hay varias formas de interactuar con una API RESTful, algunas de las más comune
   #block(
     radius: 4pt,
     clip: true,
-    image("../assets/images/swagger.png"),
+    image("../assets/images/scalar.png"),
   )
 ]
 
