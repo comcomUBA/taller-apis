@@ -55,12 +55,20 @@ export const replaceItem = ({
   params,
   body,
   set,
-}: Context<ReplaceItemRouteContract>): ReplaceItemRouteContract["response"][204 | 404] => {
-  const item = itemsService.replaceItem(params.id, body.id, body.value);
-  if (!item) {
-    set.status = 404;
-  } else {
+}: Context<ReplaceItemRouteContract>): ReplaceItemRouteContract["response"][204 | 404 | 409] => {
+  try {
+    itemsService.replaceItem(params.id, body.id, body.value);
     set.status = 204;
+  } catch (error) {
+    if (error instanceof itemsService.NotFoundError) {
+      set.status = 404;
+    } else if (error instanceof itemsService.ConflictError) {
+      set.status = 409;
+    } else if (error instanceof itemsService.EmptyIdError) {
+      set.status = 400;
+    } else {
+      throw error;
+    }
   }
   return null;
 };

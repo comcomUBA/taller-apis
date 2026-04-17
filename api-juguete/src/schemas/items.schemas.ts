@@ -2,14 +2,20 @@ import { t, type Static } from "elysia";
 
 const tags = ["Items"]; // Category tags for API documentation
 
+const idSchema = t.String({
+  description: "Item ID (no spaces, at least 1 character)",
+  pattern: "^\\S+$",
+  minLength: 1,
+});
+
 export const itemSchema = t.Object({
-  id: t.String({ description: "Unique identifier of the item" }),
+  id: idSchema,
   value: t.String({ description: "String value stored in the item" }),
 });
 export type Item = Static<typeof itemSchema>;
 
 const itemIdParamSchema = t.Object({
-  id: t.String({ description: "Item ID" }),
+  id: idSchema,
 });
 export type ItemIdParams = Static<typeof itemIdParamSchema>;
 
@@ -21,12 +27,6 @@ const itemBodySchema = t.Object({
 });
 export type ItemBody = Static<typeof itemBodySchema>;
 
-const notFoundResponseSchema = t.Null();
-export type NotFoundResponse = Static<typeof notFoundResponseSchema>;
-
-const noContentResponseSchema = t.Null();
-export type NoContentResponse = Static<typeof noContentResponseSchema>;
-
 const updateItemBodySchema = t.Object({
   value: t.Optional(
     t.String({
@@ -37,8 +37,19 @@ const updateItemBodySchema = t.Object({
 });
 export type UpdateItemBody = Static<typeof updateItemBodySchema>;
 
-const deleteItemResponseSchema = itemSchema;
-export type DeleteItemResponse = Static<typeof deleteItemResponseSchema>;
+const notFoundResponseSchema = t.Null();
+export type NotFoundResponse = Static<typeof notFoundResponseSchema>;
+
+const badRequestResponseSchema = t.String({
+  description: "Invalid request",
+});
+export type BadRequestResponse = Static<typeof badRequestResponseSchema>;
+
+const noContentResponseSchema = t.Null();
+export type NoContentResponse = Static<typeof noContentResponseSchema>;
+
+const conflictResponseSchema = t.Null();
+export type ConflictResponse = Static<typeof conflictResponseSchema>;
 
 /*
 export const getItemStatusSchema = {
@@ -133,7 +144,9 @@ export const replaceItemRouteSchema = {
   body: itemSchema,
   response: {
     204: noContentResponseSchema,
+    400: badRequestResponseSchema,
     404: notFoundResponseSchema,
+    409: conflictResponseSchema,
   },
   detail: {
     tags,
@@ -146,7 +159,9 @@ export interface ReplaceItemRouteContract {
   body: Item;
   response: {
     204: NoContentResponse;
+    400: BadRequestResponse;
     404: NotFoundResponse;
+    409: ConflictResponse;
   };
 }
 
