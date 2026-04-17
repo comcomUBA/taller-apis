@@ -9,16 +9,11 @@ import type {
 } from "../schemas/items.schemas";
 import * as itemsService from "../services/items.service";
 
-/*
-export const getItemStatus = ({
-  set,
-}: Context<GetItemStatusContract>): GetItemStatusContract["response"][200 | 404] => {
-  const item = itemsService.getRandomItem();
-  if (!item) set.status = 404;
-  return null;
-};
-*/
-
+/**
+ * @description Get a random item from the store
+ * @param {Context<GetRandomItemRouteContract>} set - The context for setting the response status
+ * @returns {Promise<GetRandomItemRouteContract["response"][200 | 404]>} The random item if there is at least one item in the store, otherwise null
+ */
 export const getRandomItem = async ({
   set,
 }: Context<GetRandomItemRouteContract>): Promise<
@@ -38,6 +33,12 @@ export const getRandomItem = async ({
   }
 };
 
+/**
+ * @description Get an item by its ID
+ * @param {Context<GetItemByIdRouteContract>} params - The query parameters
+ * @param {Context<GetItemByIdRouteContract>} set - The context for setting the response status
+ * @returns {Promise<GetItemByIdRouteContract["response"][200 | 404]>} The value of the item if found, otherwise null
+ */
 export const getItemById = async ({
   params,
   set,
@@ -56,6 +57,12 @@ export const getItemById = async ({
   }
 };
 
+/**
+ * @description Create a new item
+ * @param {Context<CreateItemRouteContract>} body - The body
+ * @param {Context<CreateItemRouteContract>} set - The context for setting the response status
+ * @returns {Promise<CreateItemRouteContract["response"][201]>} The created item
+ */
 export const createItem = async ({
   body,
   set,
@@ -65,6 +72,13 @@ export const createItem = async ({
   return item;
 };
 
+/**
+ * @description Replace an item
+ * @param {Context<ReplaceItemRouteContract>} params - The query parameters
+ * @param {Context<ReplaceItemRouteContract>} body - The request body
+ * @param {Context<ReplaceItemRouteContract>} set - The context for setting the response status
+ * @returns {Promise<ReplaceItemRouteContract["response"][204 | 404 | 409]>} null
+ */
 export const replaceItem = async ({
   params,
   body,
@@ -89,6 +103,13 @@ export const replaceItem = async ({
   return null;
 };
 
+/**
+ * @description Update an item
+ * @param {Context<UpdateItemRouteContract>} params - The query parameters
+ * @param {Context<UpdateItemRouteContract>} body - The request body
+ * @param {Context<UpdateItemRouteContract>} set - The context for setting the response status
+ * @returns {Promise<UpdateItemRouteContract["response"][204 | 404]>} null
+ */
 export const updateItem = async ({
   params,
   body,
@@ -107,6 +128,12 @@ export const updateItem = async ({
   return null;
 };
 
+/**
+ * @description Delete an item
+ * @param {Context<DeleteItemRouteContract>} params - The query parameters
+ * @param {Context<DeleteItemRouteContract>} set - The context for setting the response status
+ * @returns {Promise<DeleteItemRouteContract["response"][204 | 404]>} null
+ */
 export const deleteItem = async ({
   params,
   set,

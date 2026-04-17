@@ -1,6 +1,9 @@
 import { swagger as elysiaSwagger } from "@elysiajs/swagger";
 import pkg from "../package.json" with { type: "json" };
 
+/**
+ * @description Elysia plugin for the interactive documentation
+ */
 export const swagger = elysiaSwagger({
   path: "/docs",
   provider: "scalar",

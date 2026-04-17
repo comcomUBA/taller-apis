@@ -1,6 +1,11 @@
 import { Elysia } from "elysia";
 import { log } from "../utils/logger";
 
+/**
+ * @description Logger middleware
+ * @param {Elysia} app - The Elysia application
+ * @returns {Elysia} The Elysia application with the logger middleware
+ */
 // oxlint-disable-next-line typescript/explicit-function-return-type
 export const logger = (app: Elysia) =>
   app

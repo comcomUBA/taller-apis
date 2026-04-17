@@ -1,32 +1,62 @@
 import { t, type Static } from "elysia";
 
-const tags = ["Items"]; // Category tags for API documentation
+/**
+ * @description Tags for API documentation
+ */
+const tags = ["Items"];
 
+/**
+ * @description Schema for item ID
+ */
 const idSchema = t.String({
   description: "Item ID (no spaces, at least 1 character)",
   pattern: "^\\S+$",
   minLength: 1,
 });
 
+/**
+ * @description Schema for an item
+ */
 export const itemSchema = t.Object({
   id: idSchema,
   value: t.String({ description: "String value stored in the item" }),
 });
+
+/**
+ * @description Type for an item
+ */
 export type Item = Static<typeof itemSchema>;
 
+/**
+ * @description Schema for item ID parameter
+ */
 const itemIdParamSchema = t.Object({
   id: idSchema,
 });
+
+/**
+ * @description Type for item ID parameter
+ */
 export type ItemIdParams = Static<typeof itemIdParamSchema>;
 
+/**
+ * @description Schema for item body
+ */
 const itemBodySchema = t.Object({
   value: t.String({
     description: "String value to store",
     examples: ["ComCom"],
   }),
 });
+
+/**
+ * @description Type for item body
+ */
 export type ItemBody = Static<typeof itemBodySchema>;
 
+/**
+ * @description Schema for update item body
+ */
 const updateItemBodySchema = t.Object({
   value: t.Optional(
     t.String({
@@ -35,46 +65,58 @@ const updateItemBodySchema = t.Object({
     }),
   ),
 });
+
+/**
+ * @description Type for update item body
+ */
 export type UpdateItemBody = Static<typeof updateItemBodySchema>;
 
+/**
+ * @description Schema for not found response
+ */
 const notFoundResponseSchema = t.Null({ description: "Not found" });
+
+/**
+ * @description Type for not found response
+ */
 export type NotFoundResponse = Static<typeof notFoundResponseSchema>;
 
+/**
+ * @description Schema for bad request response
+ */
 const badRequestResponseSchema = t.String({
   description: "Bad request",
   examples: ["Invalid request"],
 });
+
+/**
+ * @description Type for bad request response
+ */
 export type BadRequestResponse = Static<typeof badRequestResponseSchema>;
 
+/**
+ * @description Schema for no content response
+ */
 const noContentResponseSchema = t.Null({ description: "No content" });
+
+/**
+ * @description Type for no content response
+ */
 export type NoContentResponse = Static<typeof noContentResponseSchema>;
 
+/**
+ * @description Schema for conflict response
+ */
 const conflictResponseSchema = t.Null({ description: "Conflict" });
+
+/**
+ * @description Type for conflict response
+ */
 export type ConflictResponse = Static<typeof conflictResponseSchema>;
 
-/*
-export const getItemStatusSchema = {
-  response: {
-    200: noContentResponseSchema,
-    404: noContentResponseSchema,
-  },
-  detail: {
-    tags,
-    summary: "Get Status of an Item",
-    description: "Returns the HTTP status codes of an item.",
-  },
-};
-export interface GetItemStatusContract {
-  response: {
-    200: NoContentResponse;
-    404: NoContentResponse;
-  };
-}
-*/
-
-/*
-  GET /items
-*/
+/**
+ * @description Schema for GET /items route
+ */
 export const getRandomItemRouteSchema = {
   response: {
     200: itemSchema,
@@ -86,6 +128,10 @@ export const getRandomItemRouteSchema = {
     description: "Returns a random item from the list.",
   },
 };
+
+/**
+ * @description Interface representing the contract of the get random item route
+ */
 export interface GetRandomItemRouteContract {
   response: {
     200: Item;
@@ -93,9 +139,9 @@ export interface GetRandomItemRouteContract {
   };
 }
 
-/*
-  GET /items/{id}
-*/
+/**
+ * @description Schema for GET /items/{id} route
+ */
 export const getItemByIdRouteSchema = {
   params: itemIdParamSchema,
   response: {
@@ -108,6 +154,10 @@ export const getItemByIdRouteSchema = {
     description: "Returns the string value of the item with the given ID.",
   },
 };
+
+/**
+ * @description Interface representing the contract of the get item by ID route
+ */
 export interface GetItemByIdRouteContract {
   params: ItemIdParams;
   response: {
@@ -116,9 +166,9 @@ export interface GetItemByIdRouteContract {
   };
 }
 
-/*
-  POST /items
-*/
+/**
+ * @description Schema for POST /items route
+ */
 export const createItemRouteSchema = {
   body: itemBodySchema,
   response: {
@@ -130,6 +180,10 @@ export const createItemRouteSchema = {
     description: "Adds a new item with a random ID and the provided string value.",
   },
 };
+
+/**
+ * @description Interface representing the contract of the create item route
+ */
 export interface CreateItemRouteContract {
   body: ItemBody;
   response: {
@@ -137,9 +191,9 @@ export interface CreateItemRouteContract {
   };
 }
 
-/*
-  PUT /items/:id
-*/
+/**
+ * @description Schema for PUT /items/{id} route
+ */
 export const replaceItemRouteSchema = {
   params: itemIdParamSchema,
   body: itemSchema,
@@ -155,6 +209,10 @@ export const replaceItemRouteSchema = {
     description: "Replaces the string value of an existing item entirely.",
   },
 };
+
+/**
+ * @description Interface representing the contract of the replace item route
+ */
 export interface ReplaceItemRouteContract {
   params: ItemIdParams;
   body: Item;
@@ -166,9 +224,9 @@ export interface ReplaceItemRouteContract {
   };
 }
 
-/*
-  PATCH /items/:id
-*/
+/**
+ * @description Schema for PATCH /items/{id} route
+ */
 export const updateItemRouteSchema = {
   params: itemIdParamSchema,
   body: updateItemBodySchema,
@@ -182,6 +240,10 @@ export const updateItemRouteSchema = {
     description: "Partially updates an existing item.",
   },
 };
+
+/**
+ * @description Interface representing the contract of the update item route
+ */
 export interface UpdateItemRouteContract {
   params: ItemIdParams;
   body: UpdateItemBody;
@@ -191,9 +253,9 @@ export interface UpdateItemRouteContract {
   };
 }
 
-/*
-  DELETE /items/:id
-*/
+/**
+ * @description Schema for DELETE /items/{id} route
+ */
 export const deleteItemRouteSchema = {
   params: itemIdParamSchema,
   response: {
@@ -206,6 +268,10 @@ export const deleteItemRouteSchema = {
     description: "Deletes the item with the given ID from the list.",
   },
 };
+
+/**
+ * @description Interface representing the contract of the delete item route
+ */
 export interface DeleteItemRouteContract {
   params: ItemIdParams;
   response: {

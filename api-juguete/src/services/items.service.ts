@@ -1,9 +1,67 @@
 import type { Item } from "../schemas/items.schemas";
 import { getRedis } from "../databases/redis";
 
+/*
+  Constants
+*/
+
+/**
+ * @description Key for the set of item IDs
+ */
 const itemsKey = "items:ids";
+
+/**
+ * @description Key for a specific item
+ * @param {string} id - The ID of the item
+ * @returns {string} The key for the item
+ */
 const itemKey = (id: string): string => `items:${id}`;
 
+/*
+  Errors definitions
+*/
+
+/**
+ * @description Error thrown when an item is not found
+ */
+export class NotFoundError extends Error {
+  constructor(message = "Item not found") {
+    super(message);
+    this.name = "NotFoundError";
+  }
+}
+
+/**
+ * @description Error thrown when an item ID conflicts with an existing item
+ */
+export class ConflictError extends Error {
+  constructor(message = "Item ID conflict") {
+    super(message);
+    this.name = "ConflictError";
+  }
+}
+
+/**
+ * @description Error thrown when an item ID cannot be empty
+ */
+export class EmptyIdError extends Error {
+  constructor(message = "Item ID cannot be empty") {
+    super(message);
+    this.name = "EmptyIdError";
+  }
+}
+
+/*
+  Helper functions
+*/
+
+/**
+ * @description Get a random item from the store
+ * @param {Awaited<ReturnType<typeof getRedis>>} client - The Redis client
+ * @param {number} attemptsLeft - The number of attempts left
+ * @returns {Promise<Item>} A random item
+ * @throws {NotFoundError} If no item is found
+ */
 async function getRandomItemFromStore(
   client: Awaited<ReturnType<typeof getRedis>>,
   attemptsLeft = 5,
@@ -22,36 +80,34 @@ async function getRandomItemFromStore(
   return getRandomItemFromStore(client, attemptsLeft - 1);
 }
 
+/**
+ * @description Generate a random UUID
+ * @returns {string} A random UUID
+ */
 function generateId(): string {
   return crypto.randomUUID();
 }
 
-export class NotFoundError extends Error {
-  constructor(message = "Item not found") {
-    super(message);
-    this.name = "NotFoundError";
-  }
-}
+/*
+  Service methods
+*/
 
-export class ConflictError extends Error {
-  constructor(message = "Item ID conflict") {
-    super(message);
-    this.name = "ConflictError";
-  }
-}
-
-export class EmptyIdError extends Error {
-  constructor(message = "Item ID cannot be empty") {
-    super(message);
-    this.name = "EmptyIdError";
-  }
-}
-
+/**
+ * @description Get a random item from the store
+ * @returns {Promise<Item>} A random item
+ * @throws {NotFoundError} If no item is found
+ */
 export async function getRandomItem(): Promise<Item> {
   const client = await getRedis();
   return getRandomItemFromStore(client);
 }
 
+/**
+ * @description Get an item by its ID
+ * @param {string} id - The ID of the item
+ * @returns {Promise<Item>} The item with the specified ID
+ * @throws {NotFoundError} If no item is found
+ */
 export async function getItemById(id: string): Promise<Item> {
   const client = await getRedis();
   const value = await client.get(itemKey(id));
@@ -61,6 +117,11 @@ export async function getItemById(id: string): Promise<Item> {
   return { id, value };
 }
 
+/**
+ * @description Create a new item
+ * @param {string} value - The value of the item
+ * @returns {Promise<Item>} The created item
+ */
 export async function createItem(value: string): Promise<Item> {
   const client = await getRedis();
   const id = generateId();
@@ -69,6 +130,15 @@ export async function createItem(value: string): Promise<Item> {
   return { id, value };
 }
 
+/**
+ * @description Replace an item with a new one
+ * @param {string} id - The ID of the item to replace
+ * @param {string} newId - The ID of the new item
+ * @param {string} newValue - The value of the new item
+ * @returns {Promise<Item>} The replaced item
+ * @throws {NotFoundError} If no item is found
+ * @throws {ConflictError} If the new item ID conflicts with an existing item
+ */
 export async function replaceItem(id: string, newId: string, newValue: string): Promise<Item> {
   const client = await getRedis();
   const currentValue = await client.get(itemKey(id));
@@ -91,6 +161,13 @@ export async function replaceItem(id: string, newId: string, newValue: string): 
   return { id: newId, value: newValue };
 }
 
+/**
+ * @description Update an item
+ * @param {string} id - The ID of the item to update
+ * @param {string} value - The new value of the item
+ * @returns {Promise<Item>} The updated item
+ * @throws {NotFoundError} If no item is found
+ */
 export async function updateItem(id: string, value?: string): Promise<Item> {
   const client = await getRedis();
   const currentValue = await client.get(itemKey(id));
@@ -104,6 +181,12 @@ export async function updateItem(id: string, value?: string): Promise<Item> {
   return { id, value: currentValue };
 }
 
+/**
+ * @description Remove an item
+ * @param {string} id - The ID of the item to remove
+ * @returns {Promise<Item>} The removed item
+ * @throws {NotFoundError} If no item is found
+ */
 export async function removeItem(id: string): Promise<Item> {
   const client = await getRedis();
   const value = await client.get(itemKey(id));

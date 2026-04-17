@@ -14,6 +14,10 @@ redis.on("error", (error) => {
   console.error("Redis client error:", error);
 });
 
+/**
+ * @description Get the Redis client
+ * @returns {Promise<RedisStore>} The Redis client
+ */
 export async function getRedis(): Promise<RedisStore> {
   if (!redis.isOpen) {
     redisConnection ??= redis.connect().finally(() => {
@@ -25,6 +29,10 @@ export async function getRedis(): Promise<RedisStore> {
   return redis;
 }
 
+/**
+ * @description Close the connection to the Redis server
+ * @returns {Promise<void>}
+ */
 export async function closeRedis(): Promise<void> {
   if (redis.isOpen) {
     await redis.quit();
