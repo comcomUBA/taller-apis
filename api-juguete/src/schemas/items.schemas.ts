@@ -37,18 +37,19 @@ const updateItemBodySchema = t.Object({
 });
 export type UpdateItemBody = Static<typeof updateItemBodySchema>;
 
-const notFoundResponseSchema = t.Null();
+const notFoundResponseSchema = t.Null({ description: "Not found" });
 export type NotFoundResponse = Static<typeof notFoundResponseSchema>;
 
 const badRequestResponseSchema = t.String({
-  description: "Invalid request",
+  description: "Bad request",
+  examples: ["Invalid request"],
 });
 export type BadRequestResponse = Static<typeof badRequestResponseSchema>;
 
-const noContentResponseSchema = t.Null();
+const noContentResponseSchema = t.Null({ description: "No content" });
 export type NoContentResponse = Static<typeof noContentResponseSchema>;
 
-const conflictResponseSchema = t.Null();
+const conflictResponseSchema = t.Null({ description: "Conflict" });
 export type ConflictResponse = Static<typeof conflictResponseSchema>;
 
 /*
