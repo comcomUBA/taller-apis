@@ -22,24 +22,36 @@ export const getItemStatus = ({
 export const getRandomItem = ({
   set,
 }: Context<GetRandomItemRouteContract>): GetRandomItemRouteContract["response"][200 | 404] => {
-  const item = itemsService.getRandomItem();
-  if (!item) {
-    set.status = 404;
+  try {
+    const item = itemsService.getRandomItem();
+    return item;
+  } catch (error) {
+    if (error instanceof itemsService.NotFoundError) {
+      set.status = 404;
+    } else {
+      throw error;
+    }
+
     return null;
   }
-  return item;
 };
 
 export const getItemById = ({
   params,
   set,
 }: Context<GetItemByIdRouteContract>): GetItemByIdRouteContract["response"][200 | 404] => {
-  const item = itemsService.getItemById(params.id);
-  if (!item) {
-    set.status = 404;
+  try {
+    const item = itemsService.getItemById(params.id);
+    return item.value;
+  } catch (error) {
+    if (error instanceof itemsService.NotFoundError) {
+      set.status = 404;
+    } else {
+      throw error;
+    }
+
     return null;
   }
-  return item.value;
 };
 
 export const createItem = ({
@@ -78,11 +90,15 @@ export const updateItem = ({
   body,
   set,
 }: Context<UpdateItemRouteContract>): UpdateItemRouteContract["response"][204 | 404] => {
-  const item = itemsService.updateItem(params.id, body.value);
-  if (!item) {
-    set.status = 404;
-  } else {
+  try {
+    itemsService.updateItem(params.id, body.value);
     set.status = 204;
+  } catch (error) {
+    if (error instanceof itemsService.NotFoundError) {
+      set.status = 404;
+    } else {
+      throw error;
+    }
   }
   return null;
 };
@@ -91,11 +107,15 @@ export const deleteItem = ({
   params,
   set,
 }: Context<DeleteItemRouteContract>): DeleteItemRouteContract["response"][204 | 404] => {
-  const deleted = itemsService.removeItem(params.id);
-  if (!deleted) {
-    set.status = 404;
-  } else {
+  try {
+    itemsService.removeItem(params.id);
     set.status = 204;
+  } catch (error) {
+    if (error instanceof itemsService.NotFoundError) {
+      set.status = 404;
+    } else {
+      throw error;
+    }
   }
   return null;
 };

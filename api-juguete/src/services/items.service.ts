@@ -6,28 +6,6 @@ function generateId(): string {
   return crypto.randomUUID();
 }
 
-export function getRandomItem(): Item | undefined {
-  const keys = Object.keys(items);
-  if (keys.length === 0) return undefined;
-  const index = Math.floor(Math.random() * keys.length);
-  const key = keys[index];
-  if (!key || !items[key]) return undefined;
-  return { id: key, value: items[key].value };
-}
-
-export function getItemById(id: string): Item | undefined {
-  const item = items[id];
-  if (!item) return undefined;
-  return { id, value: item.value };
-}
-
-export function createItem(value: string): Item {
-  const id = generateId();
-  const item: ItemBody = { value };
-  items[id] = item;
-  return { id, value };
-}
-
 export class NotFoundError extends Error {
   constructor(message = "Item not found") {
     super(message);
@@ -49,6 +27,28 @@ export class EmptyIdError extends Error {
   }
 }
 
+export function getRandomItem(): Item {
+  const keys = Object.keys(items);
+  if (keys.length === 0) throw new NotFoundError();
+  const index = Math.floor(Math.random() * keys.length);
+  const key = keys[index];
+  if (!key || !items[key]) throw new NotFoundError();
+  return { id: key, value: items[key].value };
+}
+
+export function getItemById(id: string): Item {
+  const item = items[id];
+  if (!item) throw new NotFoundError();
+  return { id, value: item.value };
+}
+
+export function createItem(value: string): Item {
+  const id = generateId();
+  const item: ItemBody = { value };
+  items[id] = item;
+  return { id, value };
+}
+
 export function replaceItem(id: string, newId: string, newValue: string): Item {
   const item = items[id];
   if (!item) throw new NotFoundError();
@@ -59,16 +59,16 @@ export function replaceItem(id: string, newId: string, newValue: string): Item {
   return { id: newId, value: item.value };
 }
 
-export function updateItem(id: string, value?: string): Item | undefined {
+export function updateItem(id: string, value?: string): Item {
   const item = items[id];
-  if (!item) return undefined;
+  if (!item) throw new NotFoundError();
   if (value) item.value = value;
   return { id, value: item.value };
 }
 
-export function removeItem(id: string): Item | undefined {
+export function removeItem(id: string): Item {
   const item = items[id];
-  if (!item) return undefined;
+  if (!item) throw new NotFoundError();
   delete items[id];
   return { id, value: item.value };
 }
