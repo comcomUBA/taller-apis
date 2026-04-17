@@ -14,7 +14,7 @@ export const swagger = elysiaSwagger({
     },
     servers: [
       {
-        url: Bun.env.BACKEND_URL!,
+        url: Bun.env.BACKEND_URL ?? "http://localhost:3000",
       },
     ],
   },

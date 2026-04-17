@@ -3,9 +3,9 @@ import { app } from "./app";
 import { closeRedis } from "./databases/redis";
 import { log } from "./utils/logger";
 
-app.listen(parseInt(Bun.env.PORT!), () => {
+app.listen(parseInt(Bun.env.PORT ?? "3000"), () => {
   if (cluster.isPrimary) {
-    log.info(`Server started successfully. API documentation: ${Bun.env.BACKEND_URL!}/docs`);
+    log.info(`Server started successfully. API documentation: ${Bun.env.BACKEND_URL ?? "http://localhost:3000"}/docs`);
   }
 });
 
