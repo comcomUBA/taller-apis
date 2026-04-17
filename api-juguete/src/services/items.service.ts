@@ -62,10 +62,10 @@ export class EmptyIdError extends Error {
  * @returns {Promise<Item>} A random item
  * @throws {NotFoundError} If no item is found
  */
-async function getRandomItemFromStore(
+const getRandomItemFromStore = async (
   client: Awaited<ReturnType<typeof getRedis>>,
   attemptsLeft = 5,
-): Promise<Item> {
+): Promise<Item> => {
   const id = await client.sRandMember(itemsKey);
   if (!id) throw new NotFoundError();
 
@@ -78,15 +78,13 @@ async function getRandomItemFromStore(
 
   if (attemptsLeft <= 1) throw new NotFoundError();
   return getRandomItemFromStore(client, attemptsLeft - 1);
-}
+};
 
 /**
  * @description Generate a random UUID
  * @returns {string} A random UUID
  */
-function generateId(): string {
-  return crypto.randomUUID();
-}
+const generateId = (): string => crypto.randomUUID();
 
 /*
   Service methods
@@ -97,10 +95,10 @@ function generateId(): string {
  * @returns {Promise<Item>} A random item
  * @throws {NotFoundError} If no item is found
  */
-export async function getRandomItem(): Promise<Item> {
+export const getRandomItem = async (): Promise<Item> => {
   const client = await getRedis();
   return getRandomItemFromStore(client);
-}
+};
 
 /**
  * @description Get an item by its ID
@@ -108,27 +106,27 @@ export async function getRandomItem(): Promise<Item> {
  * @returns {Promise<Item>} The item with the specified ID
  * @throws {NotFoundError} If no item is found
  */
-export async function getItemById(id: string): Promise<Item> {
+export const getItemById = async (id: string): Promise<Item> => {
   const client = await getRedis();
   const value = await client.get(itemKey(id));
 
   if (value === null) throw new NotFoundError();
 
   return { id, value };
-}
+};
 
 /**
  * @description Create a new item
  * @param {string} value - The value of the item
  * @returns {Promise<Item>} The created item
  */
-export async function createItem(value: string): Promise<Item> {
+export const createItem = async (value: string): Promise<Item> => {
   const client = await getRedis();
   const id = generateId();
   await client.set(itemKey(id), value);
   await client.sAdd(itemsKey, id);
   return { id, value };
-}
+};
 
 /**
  * @description Replace an item with a new one
@@ -139,7 +137,7 @@ export async function createItem(value: string): Promise<Item> {
  * @throws {NotFoundError} If no item is found
  * @throws {ConflictError} If the new item ID conflicts with an existing item
  */
-export async function replaceItem(id: string, newId: string, newValue: string): Promise<Item> {
+export const replaceItem = async (id: string, newId: string, newValue: string): Promise<Item> => {
   const client = await getRedis();
   const currentValue = await client.get(itemKey(id));
 
@@ -159,7 +157,7 @@ export async function replaceItem(id: string, newId: string, newValue: string): 
   await transaction.exec();
 
   return { id: newId, value: newValue };
-}
+};
 
 /**
  * @description Update an item
@@ -168,7 +166,7 @@ export async function replaceItem(id: string, newId: string, newValue: string): 
  * @returns {Promise<Item>} The updated item
  * @throws {NotFoundError} If no item is found
  */
-export async function updateItem(id: string, value?: string): Promise<Item> {
+export const updateItem = async (id: string, value?: string): Promise<Item> => {
   const client = await getRedis();
   const currentValue = await client.get(itemKey(id));
 
@@ -179,7 +177,7 @@ export async function updateItem(id: string, value?: string): Promise<Item> {
   }
 
   return { id, value: currentValue };
-}
+};
 
 /**
  * @description Remove an item
@@ -187,7 +185,7 @@ export async function updateItem(id: string, value?: string): Promise<Item> {
  * @returns {Promise<Item>} The removed item
  * @throws {NotFoundError} If no item is found
  */
-export async function removeItem(id: string): Promise<Item> {
+export const removeItem = async (id: string): Promise<Item> => {
   const client = await getRedis();
   const value = await client.get(itemKey(id));
 
@@ -199,4 +197,4 @@ export async function removeItem(id: string): Promise<Item> {
   await transaction.exec();
 
   return { id, value };
-}
+};
