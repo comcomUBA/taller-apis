@@ -22,7 +22,7 @@ export type ItemIdParams = Static<typeof itemIdParamSchema>;
 const itemBodySchema = t.Object({
   value: t.String({
     description: "String value to store",
-    examples: ["hello world"],
+    examples: ["ComCom"],
   }),
 });
 export type ItemBody = Static<typeof itemBodySchema>;
