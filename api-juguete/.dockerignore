@@ -1,0 +1,10 @@
+node_modules
+.zed
+.git
+.gitignore
+docker-compose.yml
+.env
+.env.*
+data
+.oxfmtrc.json
+.oxlintrc.json
