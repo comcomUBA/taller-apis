@@ -13,33 +13,6 @@
 #let default-institution = [Departamento de Computación \ FCEyN UBA]
 #let default-footer-a = [ComCom (DC - FCEyN - UBA)]
 
-#let callout-box(
-  title: none,
-  wide: true,
-  bleed: 0em,
-  it,
-) = {
-  let box-width = if wide { 100% + 2 * bleed } else { auto }
-
-  block(width: 100%)[
-    #align(center)[
-      #rect(
-        width: box-width,
-        inset: 0.9em,
-        radius: .6em,
-        fill: luma(96%),
-        stroke: (paint: secondaryColor, thickness: 1.5pt),
-        [
-          #if title != none [
-            #align(center, text(weight: "semibold")[#title])
-          ]
-          #it
-        ],
-      )
-    ]
-  ]
-}
-
 #let build-theme(
   title,
   date,
@@ -54,7 +27,7 @@
       codly(languages: codly-languages)
     }),
     config-methods(init: (self: none, body) => {
-      set text(size: 26pt)
+      set text(size: 22pt)
       set list(marker: box(
         width: 0.5em,
         height: 0.5em,
@@ -77,7 +50,7 @@
     config-page(
       paper: "presentation-4-3",
       fill: rgb("#ffffff"),
-      margin: (x: 3em, y: 2.8em),
+      margin: (x: 2em, y: 1.5em),
     ),
     config-info(
       title: title,

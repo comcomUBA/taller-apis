@@ -16,11 +16,15 @@ En el ejercicio de la lista anónima, las rutas expuestas por la API RESTful son
 - `/items/{id}`: representa un ítem específico identificado por su `id` y permite realizar operaciones como obtener los detalles de un ítem (`GET`), actualizar un ítem (`PUT` o `PATCH`) o eliminar un ítem (`DELETE`).
 
 == Route parameters, query parameters, body & response
-- Route parameters (p. ej., `{id}`): se utilizan para identificar recursos específicos. Ejemplo: `/users/:id`
+- Route parameters (p. ej., `{id}`): se utilizan para identificar recursos específicos.
+  - `/users/:id`
 
-- Query parameters: se utilizan para filtrar, ordenar o paginar recursos. Ejemplo: `/users?age=30&sort=asc`
+- Query parameters: se utilizan para filtrar, ordenar o paginar recursos.
+  - `/users?age=30&sort=asc`
 
-- Body: se utiliza para enviar datos al servidor en solicitudes `POST`, `PUT` o `PATCH`. \ Ejemplo: #raw("{ \"name\": \"Juan Pérez\" }", lang: "json")
+- Body: se utiliza para enviar datos al servidor en solicitudes `POST`, `PUT` o `PATCH`.
+  - #raw("{ \"name\": \"Juan Pérez\" }", lang: "json")
 
-- Response: es la información que el servidor devuelve al cliente después de procesar una solicitud. Ejemplo: \ `HTTP/1.1 200 OK`
-  \ #raw("{ \"id\": 1, \"name\": \"Juan Pérez\" }", lang: "json")
+- Response: es la información que el servidor devuelve al cliente después de procesar una solicitud.
+  - #raw("{ \"id\": 1, \"name\": \"Juan Pérez\" }", lang: "json")
+  - `HTTP/1.1 200 OK`

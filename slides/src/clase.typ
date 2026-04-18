@@ -25,5 +25,6 @@
 #include "slides/introduccion.typ"
 #include "slides/routes.typ"
 #include "slides/middlewares.typ"
+#include "slides/auth.typ"
 #include "slides/schemas.typ"
 #include "slides/recursos.typ"

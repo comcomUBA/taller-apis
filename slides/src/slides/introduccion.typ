@@ -39,7 +39,6 @@ Para entender como funcionan las APIs RESTful, es importante conocer los método
 
 Las APIs RESTful suelen devolver la información en formato JSON#footnote[JavaScript Object Notation.], aunque también pueden usar XML u otros formatos. A su vez, utilizan códigos de estado HTTP.
 
-`HTTP/1.1 200 OK`
 ```json
 {
   "id": 1,
@@ -48,6 +47,12 @@ Las APIs RESTful suelen devolver la información en formato JSON#footnote[JavaSc
   ...
 }
 ```
+#align(right)[
+  `HTTP/1.1 200 OK`
+]
+
+
+#pagebreak()
 
 #align(center)[
   Es importante remarcar que *no toda request devuelve contenido* en el cuerpo.
