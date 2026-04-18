@@ -1,37 +1,40 @@
 import { t, type Static } from "elysia";
 
-const tags = ["System"]; // Category tags for API documentation
+/**
+ * @description Tags para documentación de API
+ */
+const tags = ["Sistema"];
 
-/*
-  Health check route schema (GET /health)
-*/
-
-// Response schema for 200 OK
+/**
+ * @description Schema de respuesta 200 OK
+ */
 export const healthCheckSuccessResponseSchema = t.String({
-  description: "API is healthy",
+  description: "API saludable",
   example: "ok",
 });
 
-// Schema itself for the health check route
+/**
+ * @description Tipo de respuesta exitosa
+ */
+export type HealthCheckResponseSuccess = Static<typeof healthCheckSuccessResponseSchema>;
+
+/**
+ * @description Schema para la ruta health check
+ */
 export const healthCheckRouteSchema = {
   response: {
     200: healthCheckSuccessResponseSchema,
   },
   detail: {
     tags,
-    summary: "Health Check",
-    description: "Returns the health status of the API.",
+    summary: "Chequeo de salud",
+    description: "Devuelve el estado de salud de la API.",
   },
 };
 
-/*
-  TypeScript types for health check route
-*/
-
-// Type for successful health check response
-export type HealthCheckResponseSuccess = Static<typeof healthCheckSuccessResponseSchema>;
-
-// Interface representing the contract of the health check route
+/**
+ * @description Contrato de la ruta health check
+ */
 export interface HealthCheckRouteContract {
   response: {
     200: HealthCheckResponseSuccess;

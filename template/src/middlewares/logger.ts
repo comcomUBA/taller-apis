@@ -1,9 +1,11 @@
 import { Elysia } from "elysia";
 import { log } from "../utils/logger";
 
-// oxlint-disable-next-line typescript/explicit-function-return-type
-export const logger = (app: Elysia) =>
-  app
+/**
+ * @description Middleware de logging
+ */
+export function logger(app: Elysia) {
+  return app
     .derive(() => {
       return {
         start: Date.now(),
@@ -28,3 +30,4 @@ export const logger = (app: Elysia) =>
         duration,
       });
     });
+}

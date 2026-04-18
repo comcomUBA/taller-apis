@@ -1,6 +1,9 @@
 import { Elysia } from "elysia";
 import { log } from "./utils/logger";
 
+/**
+ * @description Plugin para manejar errores
+ */
 export const errorHandler = new Elysia({ name: "plugin.error" })
   .onError(({ error, set, code, request }) => {
     if (code === "NOT_FOUND") {
