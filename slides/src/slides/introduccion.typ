@@ -13,6 +13,13 @@
 
 Las API (Application Programming Interface) son mecanismos que permiten a dos componentes de software comunicarse entre sí mientras ambos sistemas cumplan con un contrato/especificación.
 
+#pause
+
+=== Ejemplos
+
+- El lector de tarjetas cuando pagás en un local se comunica con la API de la pasarela de pagos.
+- Tu IDE#footnote[Visual Studio Code, Zed, los de JetBrains, Neovim, emacs, etc.] favorito habla mediante una API con tu IA/Agente/LLM#footnote[Claude, Codex, Gemini, etc.] de confianza.
+
 == Tipos de APIs
 
 Existen varios tipos de APIs, algunas son:
@@ -37,7 +44,7 @@ Para entender como funcionan las APIs RESTful, es importante conocer los método
 
 == ¿Cómo devuelven la información?
 
-Las APIs RESTful suelen devolver la información en formato JSON#footnote[JavaScript Object Notation.], aunque también pueden usar XML u otros formatos. A su vez, utilizan códigos de estado HTTP.
+Las APIs RESTful suelen devolver la información en formato JSON, aunque también pueden usar XML u otros formatos. A su vez, utilizan códigos de estado HTTP.
 
 ```json
 {
@@ -126,7 +133,7 @@ Hay varias formas de interactuar con una API RESTful, algunas de las más comune
   #block(
     radius: 4pt,
     clip: true,
-    image("../assets/images/scalar2.png"),
+    image("../assets/images/scalar.png"),
   )
 ]
 

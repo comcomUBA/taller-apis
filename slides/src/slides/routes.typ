@@ -19,8 +19,8 @@ En el ejercicio de la lista anónima, las rutas expuestas por la API RESTful son
 - Route parameters (p. ej., `{id}`): se utilizan para identificar recursos específicos.
   - `/users/:id`
 
-- Query parameters: se utilizan para filtrar, ordenar o paginar recursos.
-  - `/users?age=30&sort=asc`
+- Query parameters: se pueden utilizar, por ejemplo, para filtrar, ordenar o paginar recursos.
+  - `/users?age=30&sort=asc&page=2`
 
 - Body: se utiliza para enviar datos al servidor en solicitudes `POST`, `PUT` o `PATCH`.
   - #raw("{ \"name\": \"Juan Pérez\" }", lang: "json")
