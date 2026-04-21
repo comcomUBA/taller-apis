@@ -1,10 +1,10 @@
 import { t } from "elysia";
-import type { UsuarioSinClaveHasheada } from "../databases/users.store";
+import type { Usuario } from "../databases/users.store";
 
 /**
  * @description Tags para documentación de API
  */
-const tags = ["Usuarios"];
+const tags = ["Me"];
 
 /*
   Schemas generales
@@ -14,9 +14,10 @@ const tags = ["Usuarios"];
  * @description Schema de usuario sin clave hasheada
  */
 
-const usuarioSinClaveHasheadaSchema = t.Object({
+const usuarioSchema = t.Object({
   uuid: t.String({ description: "UUID del usuario" }),
   nombreDeUsuario: t.String({ description: "Nombre de usuario" }),
+  claveHasheada: t.String({ description: "Clave hasheada del usuario" }),
 });
 
 /**
@@ -26,36 +27,33 @@ const unauthorizedResponseSchema = t.String({
   description: "No autorizado",
   examples: ["Unauthorized"],
 });
-
 /*
-  GET /users
+  GET /me
 */
 
 /**
- * @description Schema de la ruta GET /users
+ * @description Schema de la ruta GET /me
  */
 
-export const listarUsuariosRouteSchema = {
+export const obtenerPerfilRouteSchema = {
   response: {
-    200: t.Array(usuarioSinClaveHasheadaSchema, {
-      description: "Lista de usuarios registrados",
-    }),
+    200: usuarioSchema,
     401: unauthorizedResponseSchema,
   },
   detail: {
     tags,
-    summary: "Listar usuarios",
-    description: "Devuelve la lista de todos los usuarios registrados (sin claves).",
+    summary: "Obtener perfil",
+    description: "Devuelve el perfil del usuario autenticado.",
     security: [{ BearerAuth: [] }],
   },
 };
 
 /**
- * @description Contrato de la ruta GET /users
+ * @description Contrato de la ruta GET /me
  */
-export interface ListarUsuariosRouteContract {
+export interface ObtenerPerfilRouteContract {
   response: {
-    200: UsuarioSinClaveHasheada[];
+    200: Usuario;
     401: string;
   };
 }

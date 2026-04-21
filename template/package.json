@@ -9,6 +9,7 @@
     "start": "NODE_ENV=production bun run src/cluster.ts"
   },
   "dependencies": {
+    "@elysiajs/bearer": "^1.4.3",
     "@elysiajs/swagger": "^1.3.1",
     "elysia": "^1.4.28",
     "jose": "^6.2.2",

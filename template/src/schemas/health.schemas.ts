@@ -1,9 +1,13 @@
-import { t, type Static } from "elysia";
+import { t } from "elysia";
 
 /**
  * @description Tags para documentación de API
  */
 const tags = ["Sistema"];
+
+/*
+  Schemas generales
+*/
 
 /**
  * @description Schema de respuesta 200 OK
@@ -13,10 +17,9 @@ export const healthCheckSuccessResponseSchema = t.String({
   example: "ok",
 });
 
-/**
- * @description Tipo de respuesta exitosa
- */
-export type HealthCheckResponseSuccess = Static<typeof healthCheckSuccessResponseSchema>;
+/*
+  GET /health
+*/
 
 /**
  * @description Schema para la ruta health check
@@ -32,11 +35,3 @@ export const healthCheckRouteSchema = {
   },
 };
 
-/**
- * @description Contrato de la ruta health check
- */
-export interface HealthCheckRouteContract {
-  response: {
-    200: HealthCheckResponseSuccess;
-  };
-}

@@ -1,4 +1,5 @@
 import { Elysia } from "elysia";
+import { bearer } from '@elysiajs/bearer'
 import { obtenerPayloadDelToken, type TokenDeAcceso } from "../utils/auth";
 
 /**
@@ -6,20 +7,24 @@ import { obtenerPayloadDelToken, type TokenDeAcceso } from "../utils/auth";
  */
 export function authenticator(app: Elysia) {
   return app
-    .derive(async ({ request, set }) => {
-      const authorization = request.headers.get("Authorization");
-      const tokenDeAcceso = authorization?.startsWith("Bearer ") ? authorization.slice(7) : null;
-      if (!tokenDeAcceso) {
-        set.status = 401;
-        throw new Error("Unauthorized");
+    .use(bearer())
+    .derive(async ({ bearer, status }) => {
+      if (!bearer) {
+        return status(400, 'Unauthorized')
       }
 
-      const payload = await obtenerPayloadDelToken(tokenDeAcceso as TokenDeAcceso);
+      const payload = await obtenerPayloadDelToken(bearer as TokenDeAcceso);
       if (!payload.sub) {
-        set.status = 401;
-        throw new Error("Unauthorized");
+        return status(400, 'Unauthorized')
       }
 
       return { uuid: payload.sub };
     })
+}
+
+/**
+ * @description Contexto derivado del middleware de autenticación
+ */
+export interface ContextoAutenticado {
+  uuid: string;
 }

@@ -5,6 +5,10 @@ import { t } from "elysia";
  */
 const tags = ["Secreto"];
 
+/*
+  Schemas generales
+*/
+
 /**
  * @description Schema de respuesta 401
  */
@@ -33,3 +37,13 @@ export const obtenerSecretoRouteSchema = {
     security: [{ BearerAuth: [] }],
   },
 };
+
+/**
+ * @description Contrato de la ruta GET /secret
+ */
+export interface ObtenerSecretoRouteContract {
+  response: {
+    302: void;
+    401: string;
+  };
+}

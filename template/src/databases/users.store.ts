@@ -1,4 +1,4 @@
-type NombreDeUsuario = string;
+export type NombreDeUsuario = string;
 export type UsuarioSinClaveHasheada = Omit<Usuario, "claveHasheada">;
 export type UUID = string;
 export type Clave = string;
@@ -18,7 +18,7 @@ const nombreDeUsuarioAUsuario: Map<NombreDeUsuario, Usuario> = new Map();
 /**
  * @description Crea un nuevo usuario y lo guarda en la base de datos
  * @param {string} nombreDeUsuario - Nombre de usuario
- * @param {string} clave - Clave del usuario
+ * @param {string} claveHasheada - Clave del usuario
  * @returns {Usuario} Usuario creado
  */
 export function crearUsuario(nombreDeUsuario: NombreDeUsuario, claveHasheada: ClaveHasheada): Usuario {

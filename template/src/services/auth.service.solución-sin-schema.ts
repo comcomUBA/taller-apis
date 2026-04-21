@@ -19,6 +19,9 @@ import { hashearClave, compararClaves } from "../utils/hash";
  */
 export async function registrar(nombreDeUsuario: NombreDeUsuario, clave: Clave): Promise<UUID> {
   // TODO: Implementar
+  const claveHasheada = await hashearClave(clave)
+  const usuario = crearUsuario(nombreDeUsuario, claveHasheada)
+  return usuario.uuid
 }
 
 /**
@@ -35,9 +38,9 @@ export async function registrar(nombreDeUsuario: NombreDeUsuario, clave: Clave):
  */
 export async function login(nombreDeUsuario: string, clave: string): Promise<UUID> {
   // TODO: Implementar
-  // ...
+  const usuario = obtenerUsuarioPorNombreDeUsuario(nombreDeUsuario)
   if (!usuario) throw new Error("El usuario no existe")
-  // ...
+  const esLaClaveCorrecta = await compararClaves(clave, usuario.claveHasheada)
   if (!esLaClaveCorrecta) throw new Error("Clave incorrecta")
-  // ...
+  return usuario.uuid
 }
