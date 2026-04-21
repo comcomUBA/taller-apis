@@ -3,6 +3,8 @@ import { log } from "../utils/logger";
 
 /**
  * @description Middleware de logging
+ * @param {Elysia} app
+ * @returns {Elysia}
  */
 export function logger(app: Elysia) {
   return app

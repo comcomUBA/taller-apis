@@ -4,6 +4,8 @@ import { obtenerPayloadDelToken, type TokenDeAcceso } from "../utils/auth";
 
 /**
  * @description Middleware de autenticación
+ * @param {Elysia} app
+ * @returns {Elysia}
  */
 export function authenticator(app: Elysia) {
   return app

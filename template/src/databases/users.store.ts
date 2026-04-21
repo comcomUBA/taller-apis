@@ -17,8 +17,8 @@ const nombreDeUsuarioAUsuario: Map<NombreDeUsuario, Usuario> = new Map();
 
 /**
  * @description Crea un nuevo usuario y lo guarda en la base de datos
- * @param {string} nombreDeUsuario - Nombre de usuario
- * @param {string} claveHasheada - Clave del usuario
+ * @param {NombreDeUsuario} nombreDeUsuario - Nombre de usuario
+ * @param {ClaveHasheada} claveHasheada - Clave del usuario
  * @returns {Usuario} Usuario creado
  */
 export function crearUsuario(nombreDeUsuario: NombreDeUsuario, claveHasheada: ClaveHasheada): Usuario {
@@ -31,7 +31,7 @@ export function crearUsuario(nombreDeUsuario: NombreDeUsuario, claveHasheada: Cl
 
 /**
  * @description Obtiene un usuario por su nombre de usuario
- * @param {string} nombreDeUsuario - Nombre de usuario
+ * @param {NombreDeUsuario} nombreDeUsuario - Nombre de usuario
  * @returns {Usuario} Usuario
  */
 export function obtenerUsuarioPorNombreDeUsuario(nombreDeUsuario: NombreDeUsuario): Usuario | undefined {
@@ -40,7 +40,7 @@ export function obtenerUsuarioPorNombreDeUsuario(nombreDeUsuario: NombreDeUsuari
 
 /**
  * @description Obtiene un usuario por su UUID
- * @param {string} uuid - UUID del usuario
+ * @param {UUID} uuid - UUID del usuario
  * @returns {Usuario} Usuario
  */
 export function obtenerUsuarioPorUuid(uuid: UUID): Usuario | undefined {

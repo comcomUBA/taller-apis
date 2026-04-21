@@ -3,8 +3,8 @@ import { hashearClave, compararClaves } from "../utils/hash";
 
 /**
  * @description Registra un nuevo usuario
- * @param {string} nombreDeUsuario - Nombre de usuario
- * @param {string} clave - Clave en texto plano
+ * @param {NombreDeUsuario} nombreDeUsuario - Nombre de usuario
+ * @param {Clave} clave - Clave en texto plano
  *
  * Ejercicio: Implementar la lógica de registro
  *
@@ -26,8 +26,8 @@ export async function registrar(nombreDeUsuario: NombreDeUsuario, clave: Clave):
 
 /**
  * @description Inicia sesión y devuelve un token de acceso
- * @param {string} nombreDeUsuario - Nombre de usuario
- * @param {string} clave - Clave en texto plano
+ * @param {NombreDeUsuario} nombreDeUsuario - Nombre de usuario
+ * @param {Clave} clave - Clave en texto plano
  *
  * Ejercicio: Implementar la lógica de login
  *
@@ -36,7 +36,7 @@ export async function registrar(nombreDeUsuario: NombreDeUsuario, clave: Clave):
  *  - ¿Qué pasa si la clave es incorrecta? (usar compararClaves)
  *  - Si los datos son válidos, devolvemos el UUID del usuario
  */
-export async function login(nombreDeUsuario: string, clave: string): Promise<UUID> {
+export async function login(nombreDeUsuario: NombreDeUsuario, clave: Clave): Promise<UUID> {
   // TODO: Implementar
   const usuario = obtenerUsuarioPorNombreDeUsuario(nombreDeUsuario)
   if (!usuario) throw new Error("El usuario no existe")

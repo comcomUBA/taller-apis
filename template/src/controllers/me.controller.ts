@@ -6,6 +6,8 @@ import type { ContextoAutenticado } from "../middlewares/authenticator";
 
 /**
  * @description Obtiene el perfil del usuario autenticado
+ * @param {Context<ObtenerPerfilRouteContract> & ContextoAutenticado} contexto
+ * @returns {Usuario}
  */
 export function obtenerPerfil(contexto: Context<ObtenerPerfilRouteContract> & ContextoAutenticado): Usuario {
   return meService.obtenerPerfil(contexto.uuid);

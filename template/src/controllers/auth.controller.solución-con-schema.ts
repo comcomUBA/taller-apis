@@ -6,6 +6,9 @@ import type { IniciarSesionRouteContract, RegistrarUnUsuarioRouteContract } from
 
 /**
  * @description Registra un nuevo usuario
+ * @param {RegistrarUnUsuarioRouteContract['body']} body
+ * @param {RegistrarUnUsuarioRouteContract['set']} set
+ * @returns {RegistrarUnUsuarioRouteContract['response'][201 | 409]}
  *
  * Ejercicio: Completar la validación manual y el manejo de errores.
  *
@@ -15,7 +18,7 @@ import type { IniciarSesionRouteContract, RegistrarUnUsuarioRouteContract } from
  *  - Si el nombre de usuario ya existe -> 409
  *  - Si el registro fue exitoso -> 201, devolver el token de acceso
  */
-export async function registrar(contexto: Context<RegistrarUnUsuarioRouteContract>): Promise<RegistrarUnUsuarioRouteContract['response']['201'] | RegistrarUnUsuarioRouteContract['response']['409']> {
+export async function registrar(contexto: Context<RegistrarUnUsuarioRouteContract>): Promise<RegistrarUnUsuarioRouteContract['response'][201 | 409]> {
   const { body, set } = contexto;
   const { nombreDeUsuario, clave } = body;
 
@@ -36,6 +39,9 @@ export async function registrar(contexto: Context<RegistrarUnUsuarioRouteContrac
 
 /**
  * @description Inicia sesión
+ * @param {IniciarSesionRouteContract['body']} body
+ * @param {IniciarSesionRouteContract['set']} set
+ * @returns {IniciarSesionRouteContract['response'][200 | 401]}
  *
  * Ejercicio: Completar la validación manual y el manejo de errores.
  *
@@ -45,7 +51,7 @@ export async function registrar(contexto: Context<RegistrarUnUsuarioRouteContrac
  *  - Si las credenciales son incorrectas -> 401
  *  - Si el login fue exitoso -> 200, devolver el token de acceso
  */
-export async function login(contexto: Context<IniciarSesionRouteContract>): Promise<IniciarSesionRouteContract['response']['200'] | IniciarSesionRouteContract['response']['401']> {
+export async function login(contexto: Context<IniciarSesionRouteContract>): Promise<IniciarSesionRouteContract['response'][200 | 401]> {
   const { body, set } = contexto;
   const { nombreDeUsuario, clave } = body;
 
