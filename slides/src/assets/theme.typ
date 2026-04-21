@@ -36,7 +36,7 @@
         stroke: none,
       ))
       show figure.caption: set text(size: 0.6em)
-      show footnote.entry: set text(size: 0.6em)
+      show footnote.entry: set text(size: 0.8em)
       show heading: set text(fill: primaryColor)
       show link: it => if type(it.dest) == str {
         set text(fill: primaryColor)

@@ -102,13 +102,21 @@ Hay varias formas de interactuar con una API RESTful, algunas de las más comune
   )
 ]
 
-== Clientes HTTP (p. ej.: #link("https://hoppscotch.io/")[#text(black)[Hoppscotch]])
+== Clientes HTTP (p. ej.: #link("https://postman.com/")[#text(black)[Postman]])
+
+/*#align(center)[
+  #block(
+    radius: 4pt,
+    clip: true,
+    image("../assets/images/hoppscotch.png"),
+  )
+]*/
 
 #align(center)[
   #block(
     radius: 4pt,
     clip: true,
-    image("../assets/images/hoppscotch.png"),
+    image("../assets/images/postman.png"),
   )
 ]
 
@@ -118,7 +126,7 @@ Hay varias formas de interactuar con una API RESTful, algunas de las más comune
   #block(
     radius: 4pt,
     clip: true,
-    image("../assets/images/scalar.png"),
+    image("../assets/images/scalar2.png"),
   )
 ]
 
@@ -134,5 +142,5 @@ Esta API RESTful expone:
 
 *Consignas:*
 - Entren a *\/docs* de la API, donde van a encontrar la documentación interactiva.
-- Vayan a #link("https://hoppscotch.io/")[#text(black)[*#underline[Hoppscotch]*]]#footnote[También pueden usar cURL o la documentación interactiva.] (va a ser necesario que instalen la extensión de Hoppscotch en el navegador).
-- Prueben los distintos verbos HTTP sobre las rutas indicadas y observen las respuestas que devuelve la API.
+/*- Vayan a #link("https://hoppscotch.io/")[#text(black)[*#underline[Hoppscotch]*]]#footnote[También pueden usar cURL o la documentación interactiva.] (va a ser necesario que instalen la extensión de Hoppscotch en el navegador).*/
+- Prueben los distintos verbos HTTP sobre las rutas indicadas y observen las respuestas que devuelve la API.#footnote[También pueden usar cURL]
