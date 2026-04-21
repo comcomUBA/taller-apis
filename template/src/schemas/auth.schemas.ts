@@ -35,7 +35,7 @@ const conflictResponseSchema = t.String({
 
 export const registrarUnUsuarioSchema = {
   body: t.Object({
-    // TODO: Completar con los requerimientos del body para hacer POST /register
+    // TODO: Completar con los requerimientos del body para hacer POST /register, tener en cuenta el minLength para nombreDeUsuario y clave
     // ...
   }),
   response: {

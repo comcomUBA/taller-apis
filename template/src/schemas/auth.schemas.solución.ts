@@ -35,11 +35,13 @@ const conflictResponseSchema = t.String({
 
 export const registrarUnUsuarioSchema = {
   body: t.Object({
-    nombreDeUsuario: t.String({ description: "Nombre de usuario" }),
-    clave: t.String({ description: "Clave del usuario" }),
+    // TODO: Completar con los requerimientos del body para hacer POST /register, tener en cuenta el minLength para nombreDeUsuario y clave
+    nombreDeUsuario: t.String({ description: "Nombre de usuario", minLength: 3 }),
+    clave: t.String({ description: "Clave del usuario", minLength: 6 }),
   }),
   response: {
     201: t.Object({
+      // TODO: Completar con los requerimientos del response para hacer POST /register
       tokenDeAcceso: t.String({ description: "Token de acceso" }),
     }),
     409: conflictResponseSchema,
@@ -53,11 +55,13 @@ export const registrarUnUsuarioSchema = {
 
 export interface RegistrarUnUsuarioRouteContract {
   body: {
+    // TODO: Completar con los requerimientos del body para hacer POST /register
     nombreDeUsuario: string;
     clave: string;
   };
   response: {
     201: {
+      // TODO: Completar con los requerimientos del response para hacer POST /register
       tokenDeAcceso: string;
     };
     409: string;
@@ -75,11 +79,13 @@ export interface RegistrarUnUsuarioRouteContract {
 
 export const iniciarSesionSchema = {
   body: t.Object({
+    // TODO: Completar con los requerimientos del body para hacer POST /login
     nombreDeUsuario: t.String({ description: "Nombre de usuario" }),
     clave: t.String({ description: "Clave del usuario" }),
   }),
   response: {
     200: t.Object({
+      // TODO: Completar con los requerimientos del response para hacer POST /login
       tokenDeAcceso: t.String({ description: "Token de acceso" }),
     }),
     401: unauthorizedResponseSchema,
@@ -93,11 +99,13 @@ export const iniciarSesionSchema = {
 
 export interface IniciarSesionRouteContract {
   body: {
+    // TODO: Completar con los requerimientos del body para hacer POST /login
     nombreDeUsuario: string;
     clave: string;
   };
   response: {
     200: {
+      // TODO: Completar con los requerimientos del response para hacer POST /login
       tokenDeAcceso: string;
     };
     401: string;
