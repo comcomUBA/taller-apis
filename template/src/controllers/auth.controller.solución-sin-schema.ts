@@ -23,17 +23,17 @@ export async function registrar(contexto: { body: any; set: { status?: number | 
   // TODO: Validar que la request cumpla con lo pedido, devolver un string con el nombre del código de error
   if (!nombreDeUsuario || !clave) {
     set.status = 400
-    return "Bad Request";
+    return "Invalid Request";
   }
 
   if (nombreDeUsuario.length < 3) {
     set.status = 400
-    return "Bad Request";
+    return "Invalid Request";
   }
 
   if (clave.length < 6) {
     set.status = 400
-    return "Bad Request";
+    return "Invalid Request";
   }
 
   // TODO: Verificar que el nombre de usuario esté disponible (utilizar obtenerUsuarioPorNombreDeUsuario(nombreDeUsuario))
@@ -70,7 +70,7 @@ export async function login(contexto: { body: any; set: { status?: number | stri
   // TODO: Validar los campos del body / que la request cumpla con lo pedido, devolver un string con el nombre del código de error
   if (!nombreDeUsuario || !clave) {
     set.status = 400
-    return "Bad Request";
+    return "Invalid Request";
   }
 
   // TODO: Usamos try {} catch {} para el manejo de errores
