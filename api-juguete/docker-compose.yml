@@ -2,20 +2,28 @@ services:
   dragonfly:
     image: docker.dragonflydb.io/dragonflydb/dragonfly:latest
     container_name: api-juguete-dragonfly
-    network_mode: "host"
     ulimits:
       memlock: -1
     volumes:
       - ./data:/data
+    networks:
+      - api-juguete
 
   api:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: api-juguete-bun
-    network_mode: "host"
     depends_on:
       - dragonfly
     env_file:
       - .env
+    ports:
+      - "3000:3000"
     command: ["bun", "start"]
+    networks:
+      - api-juguete
+
+networks:
+  api-juguete:
+    driver: bridge
