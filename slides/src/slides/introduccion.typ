@@ -39,7 +39,7 @@ Las APIs RESTful son un tipo de API que sigue los #link("https://www.redhat.com/
 
 Para entender como funcionan las APIs RESTful, es importante conocer los métodos HTTP más comunes:
 #align(center)[
-  #image("../assets/images/Métodos HTTP.png", width: 69%)
+  #image("../images/métodos-http.png", width: 69%)
 ]
 
 == ¿Cómo devuelven la información?
@@ -81,7 +81,7 @@ Las APIs RESTful suelen devolver la información en formato JSON, aunque tambié
     - 5xx: Error del servidor
   ],
   [
-    #image("../assets/images/http-status-ranges-in-a-nutshell.png", width: 100%)
+    #image("../images/http-status-ranges-in-a-nutshell.png", width: 100%)
   ],
 )
 
@@ -99,13 +99,13 @@ Hay varias formas de interactuar con una API RESTful, algunas de las más comune
   #block(
     radius: 4pt,
     clip: true,
-    image("../assets/images/curl.png"),
+    image("../images/curl.png"),
   )
 
   #block(
     radius: 4pt,
     clip: true,
-    image("../assets/images/httpie.png"),
+    image("../images/httpie.png"),
   )
 ]
 
@@ -115,7 +115,7 @@ Hay varias formas de interactuar con una API RESTful, algunas de las más comune
   #block(
     radius: 4pt,
     clip: true,
-    image("../assets/images/hoppscotch.png"),
+    image("../images/hoppscotch.png"),
   )
 ]*/
 
@@ -123,7 +123,7 @@ Hay varias formas de interactuar con una API RESTful, algunas de las más comune
   #block(
     radius: 4pt,
     clip: true,
-    image("../assets/images/postman.png"),
+    image("../images/postman.png"),
   )
 ]
 
@@ -133,7 +133,7 @@ Hay varias formas de interactuar con una API RESTful, algunas de las más comune
   #block(
     radius: 4pt,
     clip: true,
-    image("../assets/images/scalar.png"),
+    image("../images/scalar.png"),
   )
 ]
 
