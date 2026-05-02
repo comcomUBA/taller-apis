@@ -32,7 +32,7 @@
         let content = {
           set align(horizon + center)
           context {
-            let title-content = text(size: 1.5em, weight: "bold", fill: ink, utils.display-current-heading(depth: 1))
+            let title-content = text(size: 1.6em, weight: "bold", fill: ink, utils.display-current-heading(depth: 1))
             let title-width = measure(title-content).width + 2em
             title-content
             v(-1.2em)
