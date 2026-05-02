@@ -1,21 +1,5 @@
 import type { Item } from "../schemas/items.schemas";
-import { getRedis } from "../databases/redis";
-
-/*
-  Constants
-*/
-
-/**
- * @description Key for the set of item IDs
- */
-const itemsKey = "items:ids";
-
-/**
- * @description Key for a specific item
- * @param {string} id - The ID of the item
- * @returns {string} The key for the item
- */
-const itemKey = (id: string): string => `items:${id}`;
+import * as itemsRepository from "../repositories/items.repository";
 
 /*
   Errors definitions
@@ -56,35 +40,26 @@ export class EmptyIdError extends Error {
 */
 
 /**
- * @description Get a random item from the store
- * @param {Awaited<ReturnType<typeof getRedis>>} client - The Redis client
+ * @description Get a random item from the store, with retries for stale index entries
  * @param {number} attemptsLeft - The number of attempts left
  * @returns {Promise<Item>} A random item
  * @throws {NotFoundError} If no item is found
  */
-const getRandomItemFromStore = async (
-  client: Awaited<ReturnType<typeof getRedis>>,
-  attemptsLeft = 5,
-): Promise<Item> => {
-  const id = await client.sRandMember(itemsKey);
+const getRandomItemFromStore = async (attemptsLeft = 5): Promise<Item> => {
+  const id = await itemsRepository.getRandomItemId();
   if (!id) throw new NotFoundError();
 
-  const value = await client.get(itemKey(id));
+  const value = await itemsRepository.getItemValue(id);
   if (value !== null) {
     return { id, value };
   }
 
-  await client.sRem(itemsKey, id);
+  // Stale index entry: remove it and retry
+  await itemsRepository.removeItemFromIndex(id);
 
   if (attemptsLeft <= 1) throw new NotFoundError();
-  return getRandomItemFromStore(client, attemptsLeft - 1);
+  return getRandomItemFromStore(attemptsLeft - 1);
 };
-
-/**
- * @description Generate a random UUID
- * @returns {string} A random UUID
- */
-const generateId = (): string => crypto.randomUUID();
 
 /*
   Service methods
@@ -96,8 +71,7 @@ const generateId = (): string => crypto.randomUUID();
  * @throws {NotFoundError} If no item is found
  */
 export const getRandomItem = async (): Promise<Item> => {
-  const client = await getRedis();
-  return getRandomItemFromStore(client);
+  return getRandomItemFromStore();
 };
 
 /**
@@ -107,8 +81,7 @@ export const getRandomItem = async (): Promise<Item> => {
  * @throws {NotFoundError} If no item is found
  */
 export const getItemById = async (id: string): Promise<Item> => {
-  const client = await getRedis();
-  const value = await client.get(itemKey(id));
+  const value = await itemsRepository.getItemValue(id);
 
   if (value === null) throw new NotFoundError();
 
@@ -121,10 +94,7 @@ export const getItemById = async (id: string): Promise<Item> => {
  * @returns {Promise<Item>} The created item
  */
 export const createItem = async (value: string): Promise<Item> => {
-  const client = await getRedis();
-  const id = generateId();
-  await client.set(itemKey(id), value);
-  await client.sAdd(itemsKey, id);
+  const id = await itemsRepository.saveItem(value);
   return { id, value };
 };
 
@@ -138,23 +108,17 @@ export const createItem = async (value: string): Promise<Item> => {
  * @throws {ConflictError} If the new item ID conflicts with an existing item
  */
 export const replaceItem = async (id: string, newId: string, newValue: string): Promise<Item> => {
-  const client = await getRedis();
-  const currentValue = await client.get(itemKey(id));
+  const currentValue = await itemsRepository.getItemValue(id);
 
   if (currentValue === null) throw new NotFoundError();
-  if (newId !== id && (await client.exists(itemKey(newId))) > 0) throw new ConflictError();
+  if (newId !== id && (await itemsRepository.itemExists(newId))) throw new ConflictError();
 
   if (newId === id) {
-    await client.set(itemKey(id), newValue);
+    await itemsRepository.updateItemValue(id, newValue);
     return { id, value: newValue };
   }
 
-  const transaction = client.multi();
-  transaction.del(itemKey(id));
-  transaction.set(itemKey(newId), newValue);
-  transaction.sRem(itemsKey, id);
-  transaction.sAdd(itemsKey, newId);
-  await transaction.exec();
+  await itemsRepository.replaceItem(id, newId, newValue);
 
   return { id: newId, value: newValue };
 };
@@ -167,12 +131,11 @@ export const replaceItem = async (id: string, newId: string, newValue: string): 
  * @throws {NotFoundError} If no item is found
  */
 export const updateItem = async (id: string, value?: string): Promise<Item> => {
-  const client = await getRedis();
-  const currentValue = await client.get(itemKey(id));
+  const currentValue = await itemsRepository.getItemValue(id);
 
   if (currentValue === null) throw new NotFoundError();
   if (value !== undefined) {
-    await client.set(itemKey(id), value);
+    await itemsRepository.updateItemValue(id, value);
     return { id, value };
   }
 
@@ -186,15 +149,11 @@ export const updateItem = async (id: string, value?: string): Promise<Item> => {
  * @throws {NotFoundError} If no item is found
  */
 export const removeItem = async (id: string): Promise<Item> => {
-  const client = await getRedis();
-  const value = await client.get(itemKey(id));
+  const value = await itemsRepository.getItemValue(id);
 
   if (value === null) throw new NotFoundError();
 
-  const transaction = client.multi();
-  transaction.del(itemKey(id));
-  transaction.sRem(itemsKey, id);
-  await transaction.exec();
+  await itemsRepository.deleteItem(id);
 
   return { id, value };
 };

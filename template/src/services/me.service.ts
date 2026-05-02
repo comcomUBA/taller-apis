@@ -1,4 +1,4 @@
-import { obtenerUsuarioPorUuid, type Usuario, type UUID } from "../databases/users.store";
+import { obtenerUsuarioPorUuid, type Usuario, type UUID } from "../repositories/users.repository";
 
 /**
  * @description Obtiene el perfil del usuario autenticado

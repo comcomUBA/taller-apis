@@ -2,6 +2,5 @@ import { Elysia } from "elysia";
 import * as authController from "../controllers/auth.controller";
 
 export const authRoutes = new Elysia()
-  /**
-   * Ejercicio: definir las rutas correspondientes, ambas deben ser POST.
-   */
+  .post("/auth/register", authController.register)
+  .post("/auth/login", authController.login);

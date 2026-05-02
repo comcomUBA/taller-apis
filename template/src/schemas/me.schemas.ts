@@ -1,5 +1,5 @@
 import { t } from "elysia";
-import type { Usuario } from "../databases/users.store";
+import type { Usuario } from "../repositories/users.repository";
 
 /**
  * @description Tags para documentación de API

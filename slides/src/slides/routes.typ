@@ -11,8 +11,10 @@ Una ruta (también conocida como endpoint) es una URL que representa un recurso 
 
 == Ejemplo
 
-En el ejercicio de la lista anónima, las rutas expuestas por la API RESTful son: #pause
+En el ejercicio de los strings anónimos, las rutas expuestas por la API RESTful son: #pause
+
 - `/items`: representa la colección de ítems y permite realizar operaciones como obtener un ítem aleatorio de la lista (`GET`) o crear un nuevo ítem (`POST`). #pause
+
 - `/items/{id}`: representa un ítem específico identificado por su `id` y permite realizar operaciones como obtener los detalles de un ítem (`GET`), actualizar un ítem (`PUT` o `PATCH`) o eliminar un ítem (`DELETE`).
 
 == Route parameters, query parameters, body & response
@@ -28,3 +30,21 @@ En el ejercicio de la lista anónima, las rutas expuestas por la API RESTful son
 - Response: es la información que el servidor devuelve al cliente después de procesar una solicitud.
   - #raw("{ \"id\": 1, \"name\": \"Juan Pérez\" }", lang: "json")
   - `HTTP/1.1 200 OK`
+
+== Ejercicio 2: Creación de rutas (para Colapinto)
+
+En el template tienen una API con varias rutas ya definidas, por ejemplo `me.routes.ts`:
+
+```ts
+export const meRoutes = new Elysia()
+  .use(authenticator)
+  .get("/me", meController.obtenerPerfil, obtenerPerfilRouteSchema);
+```
+
+*Consigna:*
++ Abran `auth.routes.ts`.
++ Registren dos rutas de tipo `POST`:
+  - `/auth/register` $->$ `authController.register`
+  - `/auth/login` $->$ `authController.login`
++ Por ahora *no* le pasen schemas (tercer argumento). Los vamos a agregar más adelante.
++ Verifiquen que las rutas aparezcan en `/docs`.

@@ -1,5 +1,5 @@
 import type { Context } from "elysia";
-import type { Usuario } from "../databases/users.store";
+import type { Usuario } from "../repositories/users.repository";
 import * as meService from "../services/me.service";
 import type { ObtenerPerfilRouteContract } from "../schemas/me.schemas";
 import type { ContextoAutenticado } from "../middlewares/authenticator";

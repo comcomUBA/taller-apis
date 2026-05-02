@@ -1,5 +1,5 @@
 import { t } from "elysia";
-import type { UsuarioSinClaveHasheada } from "../databases/users.store";
+import type { UsuarioSinClaveHasheada } from "../repositories/users.repository";
 
 /**
  * @description Tags para documentación de API

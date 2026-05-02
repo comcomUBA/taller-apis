@@ -1,5 +1,5 @@
 import * as authService from "../services/auth.service";
-import { obtenerUsuarioPorNombreDeUsuario } from "../databases/users.store"
+import { obtenerUsuarioPorNombreDeUsuario } from "../repositories/users.repository"
 import { crearTokenDeAcceso } from "../utils/auth";
 
 /**
@@ -16,7 +16,7 @@ import { crearTokenDeAcceso } from "../utils/auth";
  *  - Si el nombre de usuario ya existe -> 409
  *  - Si el registro fue exitoso -> 201, devolver el token de acceso
  */
-export async function registrar(contexto: { body: any; set: { status?: number | string } }) {
+export async function register(contexto: { body: any; set: { status?: number | string } }) {
   const { body, set } = contexto;
   const { nombreDeUsuario, clave } = body;
 
@@ -36,8 +36,8 @@ export async function registrar(contexto: { body: any; set: { status?: number | 
   // TODO: Verificar que el nombre de usuario esté disponible (utilizar obtenerUsuarioPorNombreDeUsuario(nombreDeUsuario))
   // ...
 
-  // TODO: Llamar a authService.registrar
-  const uuid = await authService.registrar(nombreDeUsuario, clave)
+  // TODO: Llamar a authService.register
+  const uuid = await authService.register(nombreDeUsuario, clave)
 
   // TODO: Devolver un objeto con el token de acceso: { tokenDeAcceso: "blah, blah, blah" } y 201 como código de estado (usar set.status = ...)
   const tokenDeAcceso = await crearTokenDeAcceso(uuid)

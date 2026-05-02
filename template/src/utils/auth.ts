@@ -1,5 +1,5 @@
 import {SignJWT, jwtVerify, type JWTPayload} from 'jose';
-import type { UUID } from "../databases/users.store";
+import type { UUID } from "../repositories/users.repository";
 export type TokenDeAcceso = string;
 
 const JWT_SECRET = new TextEncoder().encode(Bun.env.JWT_SECRET || "taller-apis-desarrollo");

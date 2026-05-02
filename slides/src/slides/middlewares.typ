@@ -82,6 +82,8 @@ export function middleware_ejemplo(app: Elysia) {
 }
 ```
 
+Hay más métodos que `.onBeforeHandle` y `.onAfterHandle`, por mencionar uno: `.derive` permite agregar contexto a la request (como por ejemplo, el tiempo exacto en que el cliente mandó la request).
+
 == ¿Cómo se usa un middleware en Elysia?
 
 Para usar un middleware, simplemente se agrega con #raw(".use()", lang: "ts"):
@@ -99,7 +101,7 @@ const app = new Elysia()
   .get("/secret", () => "Uso logger y luego authenticator.")
 ```
 
-== Ejercicio 2: Proteger rutas con autenticación
+== Ejercicio 3: Proteger rutas con autenticación
 
 En el template tienen las rutas `/secret` y `/users` *sin protección*...
 

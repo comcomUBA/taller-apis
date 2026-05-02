@@ -1,4 +1,4 @@
-import { crearUsuario, obtenerUsuarioPorNombreDeUsuario, type Clave, type NombreDeUsuario, type UUID } from "../databases/users.store";
+import { crearUsuario, obtenerUsuarioPorNombreDeUsuario, type Clave, type NombreDeUsuario, type UUID } from "../repositories/users.repository";
 import { hashearClave, compararClaves } from "../utils/hash";
 
 /**
@@ -17,7 +17,7 @@ import { hashearClave, compararClaves } from "../utils/hash";
  *  - ¿Se guarda la clave en texto plano? (usar hashearClave)
  *  - Devolvemos el UUID del usuario
  */
-export async function registrar(nombreDeUsuario: NombreDeUsuario, clave: Clave): Promise<UUID> {
+export async function register(nombreDeUsuario: NombreDeUsuario, clave: Clave): Promise<UUID> {
   // TODO: Implementar
   const claveHasheada = await hashearClave(clave)
   const usuario = crearUsuario(nombreDeUsuario, claveHasheada)

@@ -3,10 +3,10 @@ import type { Context } from "elysia";
 import type { ObtenerSecretoRouteContract } from "../schemas/secret.schemas";
 
 /**
- * @description Redirige al recurso secreto
- * @param {Context<ObtenerSecretoRouteContract>} contexto
- * @returns {void}
+ * @description Devuelve el mensaje secreto
+ * @param {Context<ObtenerSecretoRouteContract>} _contexto
+ * @returns {string} Mensaje secreto
  */
-export function obtenerSecreto(contexto: Context<ObtenerSecretoRouteContract>): void {
-  contexto.set.redirect = secretService.obtenerUrlSecreta();
+export function obtenerSecreto(_contexto: Context<ObtenerSecretoRouteContract>): string {
+  return secretService.obtenerMensajeSecreto();
 }

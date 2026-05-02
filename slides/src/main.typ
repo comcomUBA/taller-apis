@@ -23,8 +23,10 @@
 #wide-title-slide(extra: pad(top: 30pt, image("images/logo-sin-texto.min.svg", height: 3.5cm)))
 
 #include "slides/introduccion.typ"
+#include "slides/arquitectura.typ"
 #include "slides/routes.typ"
 #include "slides/middlewares.typ"
 #include "slides/auth.typ"
+#include "slides/controllers.typ"
 #include "slides/schemas.typ"
 #include "slides/recursos.typ"

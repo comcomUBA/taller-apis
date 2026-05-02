@@ -1,9 +1,9 @@
-const URL_SECRETA = "https://youtu.be/dr2CMlflcEs";
+const MENSAJE_SECRETO = "Juani y Valen estuvieron aquí.";
 
 /**
- * @description Devuelve la URL del recurso secreto
- * @returns {string} URL secreta
+ * @description Devuelve el mensaje secreto
+ * @returns {string} Mensaje secreto
  */
-export function obtenerUrlSecreta(): string {
-  return URL_SECRETA;
+export function obtenerMensajeSecreto(): string {
+  return MENSAJE_SECRETO;
 }

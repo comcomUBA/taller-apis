@@ -27,13 +27,13 @@ const unauthorizedResponseSchema = t.String({
 
 export const obtenerSecretoRouteSchema = {
   response: {
-    302: t.Void({ description: "Redirige al recurso secreto" }),
+    200: t.String({ description: "Mensaje secreto" }),
     401: unauthorizedResponseSchema,
   },
   detail: {
     tags,
-    summary: "Recurso secreto",
-    description: "Redirige al recurso secreto. Requiere autenticación.",
+    summary: "Mensaje secreto",
+    description: "Devuelve un mensaje secreto. Requiere autenticación.",
     security: [{ BearerAuth: [] }],
   },
 };
@@ -43,7 +43,7 @@ export const obtenerSecretoRouteSchema = {
  */
 export interface ObtenerSecretoRouteContract {
   response: {
-    302: void;
+    200: string;
     401: string;
   };
 }

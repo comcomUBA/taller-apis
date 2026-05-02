@@ -27,7 +27,7 @@
       codly(languages: codly-languages)
     }),
     config-methods(init: (self: none, body) => {
-      set text(size: 22pt)
+      set text(size: 20pt)
       set list(marker: box(
         width: 0.5em,
         height: 0.5em,
@@ -50,7 +50,7 @@
     config-page(
       paper: "presentation-4-3",
       fill: rgb("#ffffff"),
-      margin: (x: 2em, y: 1.5em),
+      margin: (x: 1.5em, y: 3em),
     ),
     config-info(
       title: title,

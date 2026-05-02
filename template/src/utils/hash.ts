@@ -1,4 +1,4 @@
-import type { Clave, ClaveHasheada } from "../databases/users.store";
+import type { Clave, ClaveHasheada } from "../repositories/users.repository";
 
 /**
  * @description Hashea una contraseña

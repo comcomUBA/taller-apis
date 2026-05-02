@@ -1,4 +1,4 @@
-import { obtenerTodosLosUsuarios, type UsuarioSinClaveHasheada } from "../databases/users.store";
+import { obtenerTodosLosUsuarios, type UsuarioSinClaveHasheada } from "../repositories/users.repository";
 
 /**
  * @description Devuelve la lista de todos los usuarios (sin las claves hasheadas)

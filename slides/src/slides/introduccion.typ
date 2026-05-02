@@ -11,7 +11,7 @@
 
 #pause
 
-Las API (Application Programming Interface) son mecanismos que permiten a dos componentes de software comunicarse entre sí mientras ambos sistemas cumplan con un contrato/especificación.
+Las API (Application Programming Interface) son mecanismos que permiten a dos *componentes* de *software* *comunicarse* entre sí mientras ambos sistemas *cumplan* con un *contrato/especificación*.
 
 #pause
 
@@ -29,6 +29,12 @@ Existen varios tipos de APIs, algunas son:
 
 Siendo estas últimas las más famosas, y las que nos interesarán en el transcurso del taller.
 
+#pause
+
+#align(center)[
+  #image("../images/why-apis.jpeg", width: 75%)
+]
+
 == ¿Qué es una API RESTful?
 
 Las APIs RESTful son un tipo de API que sigue los #link("https://www.redhat.com/es/topics/api/what-is-a-rest-api")[principios de diseño de REST] (Representational State Transfer).
@@ -39,7 +45,7 @@ Las APIs RESTful son un tipo de API que sigue los #link("https://www.redhat.com/
 
 Para entender como funcionan las APIs RESTful, es importante conocer los métodos HTTP más comunes:
 #align(center)[
-  #image("../images/métodos-http.png", width: 69%)
+  #image("../images/métodos-http.png", width: 68%)
 ]
 
 == ¿Cómo devuelven la información?
@@ -61,11 +67,29 @@ Las APIs RESTful suelen devolver la información en formato JSON, aunque tambié
 
 #pagebreak()
 
-#align(center)[
-  Es importante remarcar que *no toda request devuelve contenido* en el cuerpo.
+#grid(
+  columns: (1fr, 1fr),
+  [
+    #align(center)[
 
-  Por ejemplo, una request de eliminación exitosa del verbo `DELETE` suele devolver un código de estado `204 No Content`, indicando que la operación fue exitosa pero no hay contenido para devolver.
-]
+      Es importante remarcar que *no toda request devuelve contenido* en el cuerpo.
+
+      Por ejemplo, una request de eliminación exitosa del verbo `DELETE` suele devolver un código de estado `204 No Content`, indicando que la operación fue exitosa pero no hay contenido para devolver.
+    ]
+  ],
+  [
+    #pause
+    #align(center)[
+      #block(
+        radius: 4pt,
+        clip: true,
+        image("../images/códigos_de_error_correctos_y_mensajes_importantes.jpeg", width: 85%),
+      )
+
+      También está bueno *ser consistentes* con los códigos de error y *no devolver mensajes redundantes*.
+    ]
+  ],
+)
 
 == Códigos de estado HTTP
 
@@ -139,7 +163,7 @@ Hay varias formas de interactuar con una API RESTful, algunas de las más comune
 
 = Interactuando con una API RESTful
 
-== Ejercicio 1: Lista anónima
+== Ejercicio 1: Strings anónimos
 // Objetivo: familiarizarse con la documentación de la API y con las herramientas para interactuar con ella
 
 Esta API RESTful expone:
@@ -149,5 +173,4 @@ Esta API RESTful expone:
 
 *Consignas:*
 - Entren a *\/docs* de la API, donde van a encontrar la documentación interactiva.
-/*- Vayan a #link("https://hoppscotch.io/")[#text(black)[*#underline[Hoppscotch]*]]#footnote[También pueden usar cURL o la documentación interactiva.] (va a ser necesario que instalen la extensión de Hoppscotch en el navegador).*/
-- Prueben los distintos verbos HTTP sobre las rutas indicadas y observen las respuestas que devuelve la API.#footnote[También pueden usar cURL]
+- Prueben los distintos verbos HTTP sobre las rutas indicadas y observen las respuestas que devuelve la API.#footnote[En el taller usaremos la documentación interactiva, pero pueden usar cURL o lo que prefieran.]

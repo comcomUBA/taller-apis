@@ -1,5 +1,5 @@
 import * as authService from "../services/auth.service";
-import { obtenerUsuarioPorNombreDeUsuario } from "../databases/users.store"
+import { obtenerUsuarioPorNombreDeUsuario } from "../repositories/users.repository"
 import { crearTokenDeAcceso } from "../utils/auth";
 import type { Context } from "elysia";
 import type { IniciarSesionRouteContract, RegistrarUnUsuarioRouteContract } from "../schemas/auth.schemas";
@@ -18,7 +18,7 @@ import type { IniciarSesionRouteContract, RegistrarUnUsuarioRouteContract } from
  *  - Si el nombre de usuario ya existe -> 409
  *  - Si el registro fue exitoso -> 201, devolver el token de acceso
  */
-export async function registrar(contexto: Context<RegistrarUnUsuarioRouteContract>): Promise<RegistrarUnUsuarioRouteContract['response'][201 | 409]> {
+export async function register(contexto: Context<RegistrarUnUsuarioRouteContract>): Promise<RegistrarUnUsuarioRouteContract['response'][201 | 409]> {
   const { body, set } = contexto;
   const { nombreDeUsuario, clave } = body;
 
@@ -28,8 +28,8 @@ export async function registrar(contexto: Context<RegistrarUnUsuarioRouteContrac
     return "Conflict";
   }
 
-  // TODO: Llamar a authService.registrar
-  const uuid = await authService.registrar(nombreDeUsuario, clave)
+  // TODO: Llamar a authService.register
+  const uuid = await authService.register(nombreDeUsuario, clave)
 
   // TODO: Devolver un objeto con el token de acceso: { tokenDeAcceso: "blah, blah, blah" } y 201 como código de estado (usar set.status = ...)
   const tokenDeAcceso = await crearTokenDeAcceso(uuid)
