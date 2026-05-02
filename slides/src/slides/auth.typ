@@ -5,9 +5,9 @@
 
 == ¿Cómo sabe la API quién sos?
 
-Las APIs RESTful son *stateless*: no recuerdan quién sos entre request y request.
-
 #align(center)[
+  Las APIs RESTful son *stateless*: no recuerdan quién sos entre request y request.
+
   #block(
     radius: 4pt,
     clip: true,
