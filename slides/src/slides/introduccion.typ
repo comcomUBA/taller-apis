@@ -41,6 +41,9 @@ Las APIs RESTful son un tipo de API que sigue los #link("https://www.redhat.com/
 
 - Utilizan HTTP para realizar operaciones CRUD (Create, Read, Update, Delete) sobre recursos.
 
+- *Un recurso es cualquier entidad que se pueda identificar, como un usuario, un producto, una publicación, etc.*
+  - Se puede pensar _vagamente_ como "información almacenada identificable".
+
 == Métodos/verbos HTTP
 
 Para entender como funcionan las APIs RESTful, es importante conocer los métodos HTTP más comunes:
