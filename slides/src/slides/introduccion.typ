@@ -109,6 +109,27 @@ Las APIs RESTful suelen devolver la información en formato JSON, aunque tambié
   ],
 )
 
+== Headers HTTP
+
+Los headers (encabezados) son *metadatos* que viajan junto a la request (cliente $->$ servidor) o la response (servidor $->$ cliente).
+
+Contienen información adicional que no va en el body.
+
+#pause
+
+```
+GET /me HTTP/1.1
+Host: api.ejemplo.com
+Authorization: Bearer eyJhbGciOiJIUz...
+Content-Type: application/json
+```
+
+#pause
+
+Algunos headers comunes:
+- `Content-Type`: indica el formato del body (p. ej. `application/json`).
+- `Authorization`: información de autenticación y autorización.
+
 == Cómo interactuar con una API RESTful
 
 Hay varias formas de interactuar con una API RESTful, algunas de las más comunes son:
@@ -134,14 +155,6 @@ Hay varias formas de interactuar con una API RESTful, algunas de las más comune
 ]
 
 == Clientes HTTP (p. ej.: #link("https://postman.com/")[#text(black)[Postman]])
-
-/*#align(center)[
-  #block(
-    radius: 4pt,
-    clip: true,
-    image("../images/hoppscotch.png"),
-  )
-]*/
 
 #align(center)[
   #block(

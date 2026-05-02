@@ -5,9 +5,17 @@
 
 == ¿Cómo sabe la API quién sos?
 
-Las APIs RESTful son *stateless*: no recuerdan quién sos entre request y request.
+#align(center)[
+  Las APIs RESTful son *stateless*: no recuerdan quién sos entre request y request.
 
-#pause
+  #block(
+    radius: 4pt,
+    clip: true,
+    image("../images/quien-sos.jpg", width: 60%),
+  )
+]
+
+#pagebreak()
 
 Para resolver esto, se usa un esquema de *tokens*:
 

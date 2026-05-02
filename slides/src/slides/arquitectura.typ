@@ -69,3 +69,5 @@ _Dependiendo del proyecto, las tecnologías utilizadas o las preferencias del eq
 - Los *schemas* validan los datos automáticamente (los vamos a ver más adelante).
 
 Vamos a ir viendo cada una de estas partes a medida que las necesitemos.
+
+#place(right + bottom, pad(x: -30pt, y: -50pt, image("../images/gato-triste.png", width: 25%)))

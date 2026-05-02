@@ -104,3 +104,7 @@ Vamos a hacer que la validación manual desaparezca del controller.
 + Modificar `auth.routes.ts`: pasar los schemas como tercer argumento a cada `.post()`.
 + Modificar `auth.controller.ts`: tipar con `Context<...RouteContract>`, *eliminar las validaciones manuales* que ahora son redundantes.
 + Ir a `/docs` y ver la documentación auto-generada.
+
+#pause
+
+#place(right + bottom, pad(x: -70pt, y: -80pt, image("../images/hamster.png", width: 25%)))
