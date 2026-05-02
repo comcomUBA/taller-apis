@@ -7,7 +7,15 @@
 
 Las APIs RESTful son *stateless*: no recuerdan quién sos entre request y request.
 
-#pause
+#align(center)[
+  #block(
+    radius: 4pt,
+    clip: true,
+    image("../images/quien-sos.jpg", width: 60%),
+  )
+]
+
+#pagebreak()
 
 Para resolver esto, se usa un esquema de *tokens*:
 
