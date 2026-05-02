@@ -16,7 +16,7 @@
 #let arrow_edge(from, to, label: none, text-size: 14pt, ..args) = edge(from, to, "<|-|>", ..args, label: if label
   != none { text(size: text-size, label) })
 
-= ¿Cómo se estructura un proyecto? (una posibilidad)
+= ¿Cómo se estructura un proyecto?
 
 == Patrón Controller-Service-Repository (CSR)
 
