@@ -23,9 +23,25 @@
 ) = {
   stargazer-theme.with(
     progress-bar: false,
-    config-common(preamble: {
-      codly(languages: codly-languages)
-    }),
+    config-common(
+      preamble: {
+        codly(languages: codly-languages)
+      },
+      new-section-slide-fn: (config: (:), title: none, ..args, body) => touying-slide-wrapper(self => {
+        self.store.title = none
+        let content = {
+          set align(horizon + center)
+          context {
+            let title-content = text(size: 1.5em, weight: "bold", fill: ink, utils.display-current-heading(depth: 1))
+            let title-width = measure(title-content).width + 2em
+            title-content
+            v(-1.2em)
+            line(length: title-width, stroke: 1pt + primaryColor)
+          }
+        }
+        touying-slide(self: self, config: config, content)
+      }),
+    ),
     config-methods(init: (self: none, body) => {
       set text(size: 20pt)
       set list(marker: box(
