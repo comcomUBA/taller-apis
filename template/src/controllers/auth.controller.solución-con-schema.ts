@@ -1,5 +1,4 @@
 import * as authService from "../services/auth.service";
-import { obtenerUsuarioPorNombreDeUsuario } from "../repositories/users.repository"
 import { crearTokenDeAcceso } from "../utils/auth";
 import type { Context } from "elysia";
 import type { IniciarSesionRouteContract, RegistrarUnUsuarioRouteContract } from "../schemas/auth.schemas";
@@ -15,26 +14,30 @@ import type { IniciarSesionRouteContract, RegistrarUnUsuarioRouteContract } from
  * El body tiene: { nombreDeUsuario: string, clave: string }
  *
  * Casos a manejar:
- *  - Si el nombre de usuario ya existe -> 409
+ *  - Si el nombre de usuario ya existe -> 409 (el service lanza un error)
  *  - Si el registro fue exitoso -> 201, devolver el token de acceso
  */
 export async function register(contexto: Context<RegistrarUnUsuarioRouteContract>): Promise<RegistrarUnUsuarioRouteContract['response'][201 | 409]> {
   const { body, set } = contexto;
   const { nombreDeUsuario, clave } = body;
 
-  // TODO: Verificar que el nombre de usuario esté disponible (utilizar obtenerUsuarioPorNombreDeUsuario(nombreDeUsuario))
-  if (obtenerUsuarioPorNombreDeUsuario(nombreDeUsuario)) {
+  // TODO: Usamos try {} catch {} para el manejo de errores
+  /*
+   * La semántica es: try { bloque de código que intentamos ejecutar } catch {en caso de error, paramos la ejecución del bloque anterior y ejecutamos este }
+   */
+  try {
+    // TODO: Llamar a authService.register
+    const uuid = await authService.register(nombreDeUsuario, clave)
+
+    // TODO: Devolver un objeto con el token de acceso: { tokenDeAcceso: "blah, blah, blah" } y 201 como código de estado (usar set.status = ...)
+    const tokenDeAcceso = await crearTokenDeAcceso(uuid)
+    set.status = 201
+    return {tokenDeAcceso}
+  } catch {
+    // TODO: Devolver el status code correspondiente en caso de error (para este ejercicio acotado, el único error posible es que el nombre de usuario ya exista (409); usar set.status = ...)
     set.status = 409
     return "Conflict";
   }
-
-  // TODO: Llamar a authService.register
-  const uuid = await authService.register(nombreDeUsuario, clave)
-
-  // TODO: Devolver un objeto con el token de acceso: { tokenDeAcceso: "blah, blah, blah" } y 201 como código de estado (usar set.status = ...)
-  const tokenDeAcceso = await crearTokenDeAcceso(uuid)
-  set.status = 201
-  return {tokenDeAcceso}
 }
 
 /**
@@ -48,7 +51,7 @@ export async function register(contexto: Context<RegistrarUnUsuarioRouteContract
  * El body tiene: { nombreDeUsuario: string, clave: string }
  *
  * Casos a manejar:
- *  - Si las credenciales son incorrectas -> 401
+ *  - Si las credenciales son incorrectas -> 401 (el service lanza un error)
  *  - Si el login fue exitoso -> 200, devolver el token de acceso
  */
 export async function login(contexto: Context<IniciarSesionRouteContract>): Promise<IniciarSesionRouteContract['response'][200 | 401]> {

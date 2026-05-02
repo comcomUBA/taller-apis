@@ -1,5 +1,4 @@
 import * as authService from "../services/auth.service";
-import { obtenerUsuarioPorNombreDeUsuario } from "../repositories/users.repository"
 import { crearTokenDeAcceso } from "../utils/auth";
 
 /**
@@ -13,7 +12,7 @@ import { crearTokenDeAcceso } from "../utils/auth";
  *  - Si falta nombreDeUsuario o clave -> 400
  *  - Si nombreDeUsuario tiene menos de 3 caracteres -> 400
  *  - Si clave tiene menos de 6 caracteres -> 400
- *  - Si el nombre de usuario ya existe -> 409
+ *  - Si el nombre de usuario ya existe -> 409 (el service lanza un error)
  *  - Si el registro fue exitoso -> 201, devolver el token de acceso
  */
 export async function register(contexto: { body: any; set: { status?: number | string } }) {
@@ -33,16 +32,23 @@ export async function register(contexto: { body: any; set: { status?: number | s
     // ...
   }
 
-  // TODO: Verificar que el nombre de usuario esté disponible (utilizar obtenerUsuarioPorNombreDeUsuario(nombreDeUsuario))
-  // ...
+  // TODO: Usamos try {} catch {} para el manejo de errores
+  /*
+   * La semántica es: try { bloque de código que intentamos ejecutar } catch {en caso de error, paramos la ejecución del bloque anterior y ejecutamos este }
+   */
+  try {
+    // TODO: Llamar a authService.register
+    const uuid = await authService.register(nombreDeUsuario, clave)
 
-  // TODO: Llamar a authService.register
-  const uuid = await authService.register(nombreDeUsuario, clave)
-
-  // TODO: Devolver un objeto con el token de acceso: { tokenDeAcceso: "blah, blah, blah" } y 201 como código de estado (usar set.status = ...)
-  const tokenDeAcceso = await crearTokenDeAcceso(uuid)
-  // ...
-  return {tokenDeAcceso}
+    // TODO: Devolver un objeto con el token de acceso: { tokenDeAcceso: "blah, blah, blah" } y 201 como código de estado (usar set.status = ...)
+    const tokenDeAcceso = await crearTokenDeAcceso(uuid)
+    // ...
+    return {tokenDeAcceso}
+  } catch {
+    // TODO: Devolver el status code correspondiente en caso de error (para este ejercicio acotado, el único error posible es que el nombre de usuario ya exista (409); usar set.status = ...)
+    // ...
+    return "Conflict";
+  }
 }
 
 /**
@@ -54,7 +60,7 @@ export async function register(contexto: { body: any; set: { status?: number | s
  *
  * Casos a manejar:
  *  - Si falta nombreDeUsuario o clave -> 400
- *  - Si las credenciales son incorrectas -> 401
+ *  - Si las credenciales son incorrectas -> 401 (el service lanza un error)
  *  - Si el login fue exitoso -> 200, devolver el token de acceso
  */
 export async function login(contexto: { body: any; set: { status?: number | string } }) {

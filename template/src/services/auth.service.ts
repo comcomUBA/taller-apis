@@ -9,15 +9,20 @@ import { hashearClave, compararClaves } from "../utils/hash";
  * Ejercicio: Implementar la lógica de registro
  *
  * Precondición/requiere:
- * - No existe otro usuario con el mismo nombre
  * - nombreDeUsuario.length >= 3
  * - clave.length >= 6
+ *
+ * Casos a manejar:
+ *  - Si el nombre de usuario ya existe -> lanzar error
  *
  * Cosas a tener en cuenta:
  *  - ¿Se guarda la clave en texto plano? (usar hashearClave)
  *  - Devolvemos el UUID del usuario
  */
 export async function register(nombreDeUsuario: NombreDeUsuario, clave: Clave): Promise<UUID> {
+  // TODO: Verificar que el nombre de usuario esté disponible (utilizar obtenerUsuarioPorNombreDeUsuario(nombreDeUsuario))
+  if (obtenerUsuarioPorNombreDeUsuario(nombreDeUsuario)) throw new Error("El nombre de usuario ya existe")
+
   // TODO: Implementar
 }
 
