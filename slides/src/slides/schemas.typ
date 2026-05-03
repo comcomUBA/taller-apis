@@ -109,6 +109,8 @@ Al definir schemas, la documentación interactiva (Swagger / Scalar) muestra *au
 
 *Parte B -- Integrar:*
 + Modifiquen `auth.routes.ts`: pasen los schemas como tercer argumento a cada `.post()`.
+  - #raw(".post(\"/auth/register\", authController.register, registrarUnUsuarioSchema)", lang: "ts")
+  - #raw(".post(\"/auth/login\", authController.login, iniciarSesionSchema)", lang: "ts")
 + Cambien la signatura de las funciones en `auth.controller.ts` para que usen los contratos de los schemas.
   - #raw("export async function register(contexto: Context<RegistrarUnUsuarioRouteContract>): Promise<RegistrarUnUsuarioRouteContract['response'][201 | 409]> { ... }", lang: "ts")
   - #raw("export async function login(contexto: Context<IniciarSesionRouteContract>): Promise<IniciarSesionRouteContract['response'][200 | 401]> { ... }", lang: "ts")
