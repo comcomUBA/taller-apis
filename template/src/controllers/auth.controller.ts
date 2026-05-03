@@ -17,6 +17,13 @@ import { crearTokenDeAcceso } from "../utils/auth";
  */
 export async function register(contexto: { body: any; set: { status?: number | string } }) {
   const { body, set } = contexto;
+
+  if (!body) {
+    set.status = 400
+    return "Falta body en la request" // Al hacer return en el controller, se detiene la ejecución y hace que el router devuelva la respuesta con el mensaje que le pasamos (en este caso, el string "Falta body en la request")
+  }
+
+  // Nos guardamos el nombreDeUsuario y la clave en variables
   const { nombreDeUsuario, clave } = body;
 
   // TODO: Validar que la request cumpla con lo pedido, devolver un string con el nombre del código de error
@@ -32,12 +39,12 @@ export async function register(contexto: { body: any; set: { status?: number | s
     // ...
   }
 
-  // TODO: Usamos try {} catch {} para el manejo de errores
+  // Usamos try {} catch {} para el manejo de errores
   /*
    * La semántica es: try { bloque de código que intentamos ejecutar } catch {en caso de error, paramos la ejecución del bloque anterior y ejecutamos este }
    */
   try {
-    // TODO: Llamar a authService.register
+    // Llamamos a authService.register, que nos devuelve el uuid del usuario que acabamos de registrar
     const uuid = await authService.register(nombreDeUsuario, clave)
 
     // TODO: Devolver un objeto con el token de acceso: { tokenDeAcceso: "blah, blah, blah" } y 201 como código de estado (usar set.status = ...)
@@ -47,7 +54,7 @@ export async function register(contexto: { body: any; set: { status?: number | s
   } catch {
     // TODO: Devolver el status code correspondiente en caso de error (para este ejercicio acotado, el único error posible es que el nombre de usuario ya exista (409); usar set.status = ...)
     // ...
-    return "Conflict";
+    return "Ya existe un usuario con ese nombre de usuario";
   }
 }
 
@@ -65,19 +72,26 @@ export async function register(contexto: { body: any; set: { status?: number | s
  */
 export async function login(contexto: { body: any; set: { status?: number | string } }) {
   const { body, set } = contexto;
+
+  if (!body) {
+    set.status = 400
+    return "Falta body en la request" // Al hacer return en el controller, se detiene la ejecución y hace que el router devuelva la respuesta con el mensaje que le pasamos (en este caso, el string "Falta body en la request")
+  }
+
+  // Nos guardamos el nombreDeUsuario y la clave en variables
   const { nombreDeUsuario, clave } = body;
 
-  // TODO: Validar los campos del body / que la request cumpla con lo pedido, devolver un string con el nombre del código de error
+  // TODO: Validar que la request cumpla con lo pedido, devolver un string con el nombre del código de error
   if (!nombreDeUsuario || !clave) {
     // ...
   }
 
-  // TODO: Usamos try {} catch {} para el manejo de errores
+  // Usamos try {} catch {} para el manejo de errores
   /*
    * La semántica es: try { bloque de código que intentamos ejecutar } catch {en caso de error, paramos la ejecución del bloque anterior y ejecutamos este }
    */
   try {
-    // TODO: Llamar a authService.login
+    // Llamamos a authService.login, que nos devuelve el uuid del usuario que quiere iniciar sesión
     const uuid = await authService.login(nombreDeUsuario, clave)
 
     // TODO: Devolver un objeto con el token de acceso: { tokenDeAcceso: "blah, blah, blah" } y 200 como código de estado (usar set.status = ...)
@@ -87,6 +101,6 @@ export async function login(contexto: { body: any; set: { status?: number | stri
   } catch {
     // TODO: Devolver el status code correspondiente en caso de error (para este ejercicio acotado, el único error posible es que las credenciales sean inválidas (401); usar set.status = ...)
     // ...
-    return "Unauthorized";
+    return "Credenciales inválidas";
   }
 }

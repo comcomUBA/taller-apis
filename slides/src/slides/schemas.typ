@@ -18,34 +18,43 @@ const bodySchema = t.Object({
 
 Si la request no cumple con el schema, *el framework la rechaza automáticamente* con un `400 Bad Request`, sin necesidad de escribir un solo `if`.
 
-== Sin schema (`register` en `auth.controller.ts`)
+== Sin schema (`register` en `auth.controller.ts`), no entra todo el código en la diapositiva:
 
 ```ts
+// ... código anterior
+  if (!body) {
+    set.status = 400
+    return "Falta body en la request"
+  }
+  const { nombreDeUsuario, clave } = body;
   if (!nombreDeUsuario || !clave) {
     set.status = 400
-    return "Invalid Request";
+    return "Faltan el nombre del usuario y la clave en la request";
   }
   if (nombreDeUsuario.length < 3) {
     set.status = 400
-    return "Invalid Request";
+    return "El nombre de usuario debe tener al menos 3 caracteres";
   }
-  if (clave.length < 6) {
-    set.status = 400
-    return "Invalid Request";
-  }
-
-  if (obtenerUsuarioPorNombreDeUsuario(nombreDeUsuario)) {
-    set.status = 409
-    return "Conflict";
-  }
+// ... una validación similar para la clave y el resto del código
 ```
 
-== Con schema (`register` en `auth.controller.ts`)
+== Con schema (`register` en `auth.controller.ts`), entra todo el código en la diapositiva:
 
 ```ts
-  if (obtenerUsuarioPorNombreDeUsuario(nombreDeUsuario)) {
+  const { body, set } = contexto;
+  const { nombreDeUsuario, clave } = body;
+
+  // Acá estarían los chequeos manuales, pero ya no hacen falta porque el schema se encarga de eso.
+
+  try {
+    const uuid = await authService.register(nombreDeUsuario, clave)
+
+    const tokenDeAcceso = await crearTokenDeAcceso(uuid)
+    set.status = 201
+    return {tokenDeAcceso}
+  } catch {
     set.status = 409
-    return "Conflict";
+    return "Ya existe un usuario con ese nombre de usuario";
   }
 ```
 
@@ -67,8 +76,9 @@ Además, el controller puede tipar sus parámetros con el *contrato* del schema:
 
 ```ts
 export async function register(
-  contexto: Context<RegistrarUnUsuarioRouteContract>
-) { ... }
+  contexto: Context<RegistrarUnUsuarioRouteContract> // Toma un contexto que cumple con el contrato
+): Promise<RegistrarUnUsuarioRouteContract['response'][201 | 409]> // Devuelve 201 o 409, según el contrato
+{ ... }
 ```
 
 Esto da *autocompletado* y *chequeo de tipos* en el editor.
@@ -87,24 +97,22 @@ Al definir schemas, la documentación interactiva (Swagger / Scalar) muestra *au
 
 == Ejercicio 5 (extra): Escribir los schemas de auth
 
-Vamos a hacer que la validación manual desaparezca del controller.
-
 *Parte A -- Schemas (`auth.schemas.ts`):*
-+ Completar el schema de `POST /auth/registrar`:
-  - Body: `nombreDeUsuario` (string, minLength 3), `clave` (string, minLength 6).
-  - Response 201: objeto con `tokenDeAcceso` (string).
-+ Completar el schema de `POST /auth/login`:
++ *Completen el schema* de `POST /auth/login`#footnote[Básense en el schema de `POST /auth/register` que ya está implementado.]:
   - Body: `nombreDeUsuario` (string), `clave` (string).
   - Response 200: objeto con `tokenDeAcceso` (string).
-+ Completar las interfaces (`RegistrarUnUsuarioRouteContract`, `IniciarSesionRouteContract`).
-
-#pause
++ *Completen el contrato*#footnote[#raw("export interface IniciarSesionRouteContract { ... }", lang: "ts")] de `POST /auth/login`#footnote[El contrato de `POST /auth/register` ya está implementado, pueden usarlo como referencia.]:
+  - Body: `nombreDeUsuario` (string), `clave` (string).
+  - Response 200: objeto con `tokenDeAcceso` (string).
+  - Response 401: string (mensaje de error).
+#pagebreak()
 
 *Parte B -- Integrar:*
-+ Modificar `auth.routes.ts`: pasar los schemas como tercer argumento a cada `.post()`.
-+ Modificar `auth.controller.ts`: tipar con `Context<...RouteContract>`, *eliminar las validaciones manuales* que ahora son redundantes.
-+ Ir a `/docs` y ver la documentación auto-generada.
-
-#pause
++ Modifiquen `auth.routes.ts`: pasen los schemas como tercer argumento a cada `.post()`.
++ Cambien la signatura de las funciones en `auth.controller.ts` para que usen los contratos de los schemas.
+  - #raw("export async function register(contexto: Context<RegistrarUnUsuarioRouteContract>): Promise<RegistrarUnUsuarioRouteContract['response'][201 | 409]> { ... }", lang: "ts")
+  - #raw("export async function login(contexto: Context<IniciarSesionRouteContract>): Promise<IniciarSesionRouteContract['response'][200 | 401]> { ... }", lang: "ts")
++ *Eliminen las validaciones manuales* que ahora son redundantes.
++ Vayan a `/docs` y vean la documentación auto-generada.
 
 #place(right + bottom, pad(x: -70pt, y: -80pt, image("../images/hamster.png", width: 25%)))

@@ -81,14 +81,14 @@ export function crear(nombreDeUsuario, claveHasheada) {
 Ahora que entienden cómo se organiza, van a implementar la autenticación.
 
 *Parte A -- Service (`auth.service.ts`):*
-+ Implementar `registrar`: hashear la clave (con `hashearClave`), crear el usuario (con el repository), devolver su UUID.
-+ Implementar `login`: buscar el usuario (con el repository), comparar claves (con `compararClaves`), devolver su UUID.
++ Implementen `registrar`: hasheen la clave (con #raw("await hashearClave(clave)", lang: "ts")) y creen el usuario (con #raw("crearUsuario(nombreDeUsuario, claveHasheada)", lang: "ts")), luego devuelvan su UUID.
++ Implementen `login`: obtengan el objeto usuario (con #raw("obtenerUsuarioPorNombreDeUsuario(nombreDeUsuario)", lang: "ts")) y comparen la clave que les pasaron con la clave guardada (con #raw("await compararClaves(clave, usuario.claveHasheada)", lang: "ts")), luego devuelvan su UUID.
 
 #pause
 
 *Parte B -- Controller (`auth.controller.ts`):*
-+ Completar `registrar`: validar campos del body (que existan, largos mínimos), verificar que el usuario no exista, llamar al service, devolver token + status `201`.
-+ Completar `login`: validar campos, llamar al service con try/catch, devolver token + status `200` o `401`.
++ Completen `registrar`: validen que el body exista, luego sus parámetros (que existan, largos mínimos), llamaen al service dentro del try/catch y devuelvan el token con el status code `201` o que el usuario ya existe con el status code `409`, según corresponda.
++ Completen `login`: validen que el body exista, luego sus parámetros (que existan), llamaen al service dentro del try/catch y devuelvan el token con el status code `200` o que las credenciales son inválidas con el status code `401`, según corresponda.
 
 #pause
 

@@ -35,13 +35,14 @@ const conflictResponseSchema = t.String({
 
 export const registrarUnUsuarioSchema = {
   body: t.Object({
-    // TODO: Completar con los requerimientos del body para hacer POST /register, tener en cuenta el minLength para nombreDeUsuario y clave
-    // ...
+    // Completamos con los requerimientos del body para hacer POST /register, tener en cuenta el minLength para nombreDeUsuario y clave
+    nombreDeUsuario: t.String({ description: "Nombre de usuario", minLength: 3 }),
+    clave: t.String({ description: "Clave del usuario", minLength: 6 }),
   }),
   response: {
     201: t.Object({
-      // TODO: Completar con los requerimientos del response para hacer POST /register
-      // ...
+      // Completamos con los requerimientos del response para hacer POST /register
+      tokenDeAcceso: t.String({ description: "Token de acceso" }),
     }),
     409: conflictResponseSchema,
   },
@@ -54,13 +55,14 @@ export const registrarUnUsuarioSchema = {
 
 export interface RegistrarUnUsuarioRouteContract {
   body: {
-    // TODO: Completar con los requerimientos del body para hacer POST /register
-    // ...
+    // Completamos con los requerimientos del body para hacer POST /register
+    nombreDeUsuario: string;
+    clave: string;
   };
   response: {
     201: {
-      // TODO: Completar con los requerimientos del response para hacer POST /register
-      // ...
+      // Completamos con los requerimientos del response para hacer POST /register
+      tokenDeAcceso: string;
     };
     409: string;
   };
