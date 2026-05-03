@@ -98,10 +98,10 @@ Al definir schemas, la documentación interactiva (Swagger / Scalar) muestra *au
 == Ejercicio 5 (extra): Escribir los schemas de auth
 
 *Parte A -- Schemas (`auth.schemas.ts`):*
-+ *Completen el schema* de `POST /auth/login`#footnote[Básense en el schema de `POST /auth/register` que ya está implementado.]:
++ *Completen el schema* #raw("const iniciarSesionSchema = { ... }", lang: "ts")#footnote[Básense en el schema #raw("const registrarUnUsuarioSchema = { ... }", lang: "ts") que ya está implementado.]:
   - Body: `nombreDeUsuario` (string), `clave` (string).
   - Response 200: objeto con `tokenDeAcceso` (string).
-+ *Completen el contrato*#footnote[#raw("export interface IniciarSesionRouteContract { ... }", lang: "ts")] de `POST /auth/login`#footnote[El contrato de `POST /auth/register` ya está implementado, pueden usarlo como referencia.]:
++ *Completen el contrato* #raw("interface IniciarSesionRouteContract { ... }", lang: "ts")#footnote[El contrato #raw("interface RegistrarUnUsuarioRouteContract { ... }", lang: "ts") ya está implementado, úsenlo como referencia.]:
   - Body: `nombreDeUsuario` (string), `clave` (string).
   - Response 200: objeto con `tokenDeAcceso` (string).
   - Response 401: string (mensaje de error).
