@@ -95,7 +95,7 @@ Al definir schemas, la documentación interactiva (Swagger / Scalar) muestra *au
 
 *Todo sin escribir documentación a mano.* Solo por definir los schemas.
 
-== Ejercicio 5 (extra): Escribir los schemas de auth
+== Ejercicio 5: Escribir los schemas de auth
 
 *Parte A -- Schemas (`auth.schemas.ts`):*
 + *Completen el schema* #raw("const iniciarSesionSchema = { ... }", lang: "ts")#footnote[Básense en el schema #raw("const registrarUnUsuarioSchema = { ... }", lang: "ts") que ya está implementado.]:
@@ -105,12 +105,13 @@ Al definir schemas, la documentación interactiva (Swagger / Scalar) muestra *au
   - Body: `nombreDeUsuario` (string), `clave` (string).
   - Response 200: objeto con `tokenDeAcceso` (string).
   - Response 401: string (mensaje de error).
-#pagebreak()
-
-*Parte B -- Integrar:*
 + Modifiquen `auth.routes.ts`: pasen los schemas como tercer argumento a cada `.post()`.
   - #raw(".post(\"/auth/register\", authController.register, registrarUnUsuarioSchema)", lang: "ts")
   - #raw(".post(\"/auth/login\", authController.login, iniciarSesionSchema)", lang: "ts")
+
+#pagebreak()
+
+*Parte B -- Autocompletado y chequeo de tipos (opcional):*
 + Cambien la signatura de las funciones en `auth.controller.ts` para que usen los contratos de los schemas.
   - #raw("export async function register(contexto: Context<RegistrarUnUsuarioRouteContract>): Promise<RegistrarUnUsuarioRouteContract['response'][201 | 409]> { ... }", lang: "ts")
   - #raw("export async function login(contexto: Context<IniciarSesionRouteContract>): Promise<IniciarSesionRouteContract['response'][200 | 401]> { ... }", lang: "ts")

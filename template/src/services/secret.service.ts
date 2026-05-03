@@ -1,4 +1,4 @@
-const MENSAJE_SECRETO = "Juani y Valen estuvieron aquí.";
+const MENSAJE_SECRETO = "El equipo de Taller de APIs estuvo aquí.";
 
 /**
  * @description Devuelve el mensaje secreto

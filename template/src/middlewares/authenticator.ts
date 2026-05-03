@@ -12,15 +12,16 @@ export function authenticator(app: Elysia) {
     .use(bearer())
     .derive(async ({ bearer, status }) => {
       if (!bearer) {
-        return status(400, 'Unauthorized')
+        return status(400, 'Falta el token de autenticación')
       }
 
-      const payload = await obtenerPayloadDelToken(bearer as TokenDeAcceso);
-      if (!payload.sub) {
-        return status(400, 'Unauthorized')
+      try {
+        const payload = await obtenerPayloadDelToken(bearer as TokenDeAcceso);
+        if (!payload.sub) return status(400, 'Al token le falta el campo "sub"')
+        return { uuid: payload.sub };
+      } catch {
+        return status(400, 'Token de autenticación inválido')
       }
-
-      return { uuid: payload.sub };
     })
 }
 

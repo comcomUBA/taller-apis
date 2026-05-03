@@ -8,9 +8,12 @@
 Un controller *recibe la request* HTTP, llama al service correspondiente, y *decide qué responder* (código de estado + body).
 
 ```ts
-export function obtenerPerfil(contexto) {
-  // Llama al service
-  return meService.obtenerPerfil(contexto.uuid);
+export function tweetAnónController(contexto) {
+  if (!contexto.body || !contexto.body.textoTweet) {
+    set.status = 400;
+    return "Falta el body o el texto del tweet";
+  }
+  return tweetAnónService.publicarTweetAnón(contexto.uuid, contexto.body.textoTweet);
 }
 ```
 
@@ -22,13 +25,16 @@ export function obtenerPerfil(contexto) {
 
 == ¿Qué es un Service?
 
-Un service contiene la *lógica de negocio*: aplica reglas, valida precondiciones y usa el *repository* para acceder a los datos.
+Un service contiene la *lógica de negocio*: aplica reglas, valida campos según las reglas de negocio y usa el *repository* para acceder a los datos.
 
 ```ts
-export function obtenerPerfil(uuid) {
+export function publicarTweetAnón(uuid, textoTweet) {
   const user = usersRepository.obtenerPorUuid(uuid);
   if (!user) throw new Error("Usuario no encontrado");
-  return user;
+  if (user.baneado) throw new Error("Usuario baneado");
+  if (textoTweet.length > 280) throw new Error("El texto del tweet es demasiado largo");
+  const tweet = tweetAnónRepository.crear(uuid, textoTweet);
+  return tweet;
 }
 ```
 
@@ -42,16 +48,17 @@ export function obtenerPerfil(uuid) {
 
 Un repository se encarga del *acceso a los datos*: leer, escribir, actualizar y eliminar registros de la base de datos.
 
+- #raw("usersRepository.obtenerPorUuid(uuid)", lang: "ts"):
 ```ts
 export function obtenerPorUuid(uuid) {
-  return uuidAUsuario.get(uuid);
+  // Código que obtiene el usuario de la base de datos usando su UUID
 }
+```
 
-export function crear(nombreDeUsuario, claveHasheada) {
-  const uuid = crypto.randomUUID();
-  const usuario = { uuid, nombreDeUsuario, claveHasheada };
-  uuidAUsuario.set(uuid, usuario);
-  return usuario;
+- #raw("tweetAnónRepository.crear(uuid, textoTweet)", lang: "ts"):
+```ts
+export function crear(uuid, textoTweet) {
+  // Código que crea un nuevo tweet en la base de datos con el UUID del usuario y el texto del tweet
 }
 ```
 
@@ -76,19 +83,53 @@ export function crear(nombreDeUsuario, claveHasheada) {
   )
 ]
 
-== Ejercicio 4: Implementar login y register
+== Promesas, async y await
 
-Ahora que entienden cómo se organiza, van a implementar la autenticación.
-
-*Parte A -- Service (`auth.service.ts`):*
-+ Implementen `registrar`: hasheen la clave (con #raw("await hashearClave(clave)", lang: "ts")) y creen el usuario (con #raw("crearUsuario(nombreDeUsuario, claveHasheada)", lang: "ts")), luego devuelvan su UUID.
-+ Implementen `login`: obtengan el objeto usuario (con #raw("obtenerUsuarioPorNombreDeUsuario(nombreDeUsuario)", lang: "ts")) y comparen la clave que les pasaron con la clave guardada (con #raw("await compararClaves(clave, usuario.claveHasheada)", lang: "ts")), luego devuelvan su UUID.
+Algunas operaciones *tardan*: leer un archivo, hacer una consulta a la DB, llamar a otra API...
 
 #pause
 
+TypeScript/JavaScript *no se queda esperando*. En vez de eso, te devuelve una *promesa*: un objeto que dice _"todavía no tengo el resultado, pero te lo voy a dar cuando esté listo"_.
+
+```ts
+// Esto NO devuelve el usuario, devuelve una PROMESA de un usuario.
+const promesa = db.query("SELECT * FROM users WHERE uuid = ?", [uuid]);
+```
+
+#pause
+
+Para decirle a TypeScript/JavaScript _"esperá a que termine antes de seguir"_, usamos `await`:
+
+```ts
+// Ahora sí, esperamos a que la promesa se resuelva y obtenemos el usuario.
+const usuario = await db.query("SELECT * FROM users WHERE uuid = ?", [uuid]);
+```
+
+#pagebreak()
+
+Para poder usar `await` dentro de una función, hay que marcarla como `async`:
+
+```ts
+async function obtenerUsuario(uuid) {
+  const usuario = await db.query("SELECT * FROM users WHERE uuid = ?", [uuid]);
+  return usuario;
+}
+```
+
+- Si una función es `async`, *siempre devuelve una promesa* (aunque parezca que devuelve un valor directo).
+- Si se olvidan de poner `await`, van a recibir el objeto `Promise` en vez del resultado.
+
+== Ejercicio 4: Implementar login y register
+
+*Parte A -- Service (`auth.service.ts`):*
++ Implementen `registrar`: hasheen la clave (con #raw("await hashearClave(clave)", lang: "ts")) y creen el usuario (con #raw("crearUsuario(nombreDeUsuario, claveHasheada)", lang: "ts")), luego devuelvan su UUID.
+
++ Implementen `login`: obtengan el objeto usuario (con #raw("obtenerUsuarioPorNombreDeUsuario(nombreDeUsuario)", lang: "ts")) y comparen la clave que les pasaron con la clave guardada (con #raw("await compararClaves(clave, usuario.claveHasheada)", lang: "ts")), luego devuelvan su UUID.
+
 *Parte B -- Controller (`auth.controller.ts`):*
-+ Completen `registrar`: validen que el body exista, luego sus parámetros (que existan, largos mínimos), llamaen al service dentro del try/catch y devuelvan el token con el status code `201` o que el usuario ya existe con el status code `409`, según corresponda.
-+ Completen `login`: validen que el body exista, luego sus parámetros (que existan), llamaen al service dentro del try/catch y devuelvan el token con el status code `200` o que las credenciales son inválidas con el status code `401`, según corresponda.
++ Completen `registrar`: validen que el body exista, luego sus parámetros (que existan, largos mínimos), llamen al service dentro del try/catch y devuelvan el token con el status code `201` o que el usuario ya existe con el status code `409`, según corresponda.
+
++ Completen `login`: validen que el body exista, luego sus parámetros (que existan), llamen al service dentro del try/catch y devuelvan el token con el status code `200` o que las credenciales son inválidas con el status code `401`, según corresponda.
 
 #pause
 

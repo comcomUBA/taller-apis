@@ -182,6 +182,8 @@ Hay varias formas de interactuar con una API RESTful, algunas de las más comune
 == Ejercicio 1: Strings anónimos
 // Objetivo: familiarizarse con la documentación de la API y con las herramientas para interactuar con ella
 
+Levantamos un servidor, este expone una API RESTful lista para usar. La idea de este ejercicio es familiarizarse con alguna forma para interactuar con la API (terminal, cliente HTTP o documentación interactiva) y probar los distintos endpoints que expone la API.
+
 Esta API RESTful expone:
 
 - `/items`: permite solicitudes `GET` y `POST`.

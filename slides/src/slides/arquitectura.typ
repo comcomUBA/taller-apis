@@ -18,26 +18,6 @@
 
 = ¿Cómo se estructura un proyecto?
 
-== Patrón Controller-Service-Repository (CSR)
-
-Una forma de organizar el código es separarlo en directorios, cada uno con una responsabilidad:
-
-```
-src/
-├── routes/          Definen los endpoints (paths + verbos HTTP)
-├── controllers/     Reciben la request y deciden la respuesta
-├── services/        Contienen la lógica de negocio
-├── repositories/    Acceso a la base de datos
-├── schemas/         Definen la forma (y validación) de los datos
-├── middlewares/     Funciones que interceptan requests
-└── databases/       Configuración/conexión a la base de datos
-```
-También puede estar presente un directorio `utils` para funciones de utilidad.
-
-Generalmente, para cada recurso (p. ej. `items`, `users`, `auth`) existe un archivo en `routes`, `controllers` y `services`; a veces también en `repositories`.
-
-_Dependiendo del proyecto, las tecnologías utilizadas o las preferencias del equipo, algunos directorios pueden no existir o pueden tener otros nombres._
-
 == Flujo de una request
 
 #align(center)[
@@ -71,3 +51,23 @@ _Dependiendo del proyecto, las tecnologías utilizadas o las preferencias del eq
 Vamos a ir viendo cada una de estas partes a medida que las necesitemos.
 
 #place(right + bottom, pad(x: -30pt, y: -50pt, image("../images/gato-triste.png", width: 25%)))
+
+== Patrón Controller-Service-Repository (CSR)
+
+Una forma de organizar el código es separarlo en directorios, cada uno con una responsabilidad:
+
+```
+src/
+├── routes/          Definen los endpoints (paths + verbos HTTP)
+├── controllers/     Reciben la request y deciden la respuesta
+├── services/        Contienen la lógica de negocio
+├── repositories/    Acceso a la base de datos
+├── schemas/         Definen la forma (y validación) de los datos
+├── middlewares/     Funciones que interceptan requests
+└── databases/       Configuración/conexión a la base de datos
+```
+También puede estar presente un directorio `utils` para funciones de utilidad.
+
+Generalmente, para cada recurso (p. ej. `items`, `users`, `auth`) existe un archivo en `routes`, `controllers` y `services`; a veces también en `repositories`.
+
+_Dependiendo del proyecto, las tecnologías utilizadas o las preferencias del equipo, algunos directorios pueden no existir o pueden tener otros nombres._

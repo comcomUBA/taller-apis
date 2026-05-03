@@ -26,7 +26,7 @@
 
 == ¿Qué es un middleware?
 
-Un middleware es una función que se ejecuta *antes* y/o *después* de que un handler procese una request.
+Un middleware es una función que se ejecuta *antes* y/o *después* de que un handler (controller) procese una request.
 
 Se puede pensar como una "capa" que intercepta las solicitudes y respuestas.
 
@@ -103,11 +103,12 @@ const app = new Elysia()
 
 == Ejercicio 3: Proteger rutas con autenticación
 
-En el template tienen las rutas `/secret` y `/users` *sin protección*...
+En el template tienen las rutas *`/secret`* y *`/users`* sin protección...
 
 *Consigna:*
-+ Abran los archivos `secret.routes.ts` y `users.routes.ts`.
-+ Importen el middleware `authenticator` de `../middlewares/authenticator`.
-+ Agreguen `.use(authenticator)` antes de la definición de la ruta.
-+ Prueben acceder a `/secret` *sin* token: deberían recibir un `401 Unauthorized`.
-+ Miren cómo se ve `/me` (`me.routes.ts`) como ejemplo de una ruta ya protegida.
++ Accedan a *`http://localhost:3000/docs`*.
++ Mándenle un `GET` a *`/secret`* y *`/users`*, vean qué devuelven.
++ Abran los archivos *`secret.routes.ts`* y *`users.routes.ts`* ubicados en la carpeta *`src/routes`*.
++ Importen el middleware *`authenticator`* de *`../middlewares/authenticator`*.
++ Agreguen *#raw(".use(authenticator)", lang: "ts")* antes de la definición de la ruta.
++ Prueben acceder a *`/secret`* y *`/users`*: deberían recibir un status code: `400` y en el body: `Falta el token de autenticación`.

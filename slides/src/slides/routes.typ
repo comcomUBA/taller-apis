@@ -33,18 +33,20 @@ En el ejercicio de los strings anónimos, las rutas expuestas por la API RESTful
 
 == Ejercicio 2: Creación de rutas (para Colapinto)
 
-En el template tienen una API con varias rutas ya definidas, por ejemplo `me.routes.ts`:
+En el template tienen una API con varias rutas ya definidas, por ejemplo:
 
 ```ts
-export const meRoutes = new Elysia()
-  .use(authenticator)
-  .get("/me", meController.obtenerPerfil, obtenerPerfilRouteSchema);
+export const ejemploRoutes = new Elysia()
+  .get("/ejemploGet", ejemploController.ejemploRecursoGet)
+  .post("/ejemploPost", ejemploController.ejemploRecursoPost);
 ```
 
 *Consigna:*
-+ Abran `auth.routes.ts`.
++ Descárguense en template y ábranlo en su editor de código.
++ Hagan *`bun install`* para instalar las dependencias.
++ Abran *`auth.routes.ts`* ubicado en la carpeta `src/routes`.
 + Registren dos rutas de tipo `POST`:
   - `/auth/register` $->$ `authController.register`
   - `/auth/login` $->$ `authController.login`
-+ Por ahora *no* le pasen schemas (tercer argumento). Los vamos a agregar más adelante.
-+ Verifiquen que las rutas aparezcan en `/docs`.
++ Hagan *`bun dev`* para levantar la API.
++ Verifiquen que las rutas aparezcan en *`http://localhost:3000/docs`*.
