@@ -99,7 +99,11 @@ export const updateItemValue = async (id: string, value: string): Promise<void> 
  * @param {string} newId - The new ID
  * @param {string} newValue - The new value
  */
-export const replaceItem = async (oldId: string, newId: string, newValue: string): Promise<void> => {
+export const replaceItem = async (
+  oldId: string,
+  newId: string,
+  newValue: string,
+): Promise<void> => {
   const client = await getRedis();
   const transaction = client.multi();
   transaction.del(itemKey(oldId));

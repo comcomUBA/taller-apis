@@ -19,6 +19,34 @@ if (cluster.isPrimary) {
     }
   });
 
+  // Listen for reset messages from workers
+  const handleWorkerMessage = (message: { type?: string }): void => {
+    if (message.type === "reset") {
+      log.info("Reset requested, restarting all workers...");
+      for (const worker of Object.values(cluster.workers ?? {})) {
+        if (worker) {
+          worker.disconnect();
+          setTimeout(() => {
+            if (!worker.isDead()) worker.kill("SIGKILL");
+          }, 5000).unref();
+        }
+      }
+      // Fork fresh workers after a short delay to let old ones drain
+      setTimeout(() => {
+        const targetWorkers = os.availableParallelism();
+        const currentWorkers = Object.keys(cluster.workers ?? {}).length;
+        for (let i = currentWorkers; i < targetWorkers; i++) {
+          const w = cluster.fork();
+          w.on("message", handleWorkerMessage);
+        }
+      }, 1000).unref();
+    }
+  };
+
+  cluster.on("fork", (worker) => {
+    worker.on("message", handleWorkerMessage);
+  });
+
   const shutdown = (): void => {
     log.info("Cluster stopped successfully.");
     process.exit(0);

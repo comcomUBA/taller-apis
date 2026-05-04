@@ -13,6 +13,7 @@
     "fmt:check": "oxfmt --check"
   },
   "dependencies": {
+    "@elysiajs/bearer": "^1.4.4",
     "@elysiajs/swagger": "^1.3.1",
     "elysia": "^1.4.28",
     "pino": "^10.3.1",

@@ -1,6 +1,6 @@
 import { createClient } from "redis";
 
-const redisUrl = Bun.env.REDIS_URL ?? "redis://localhost:6379";
+const redisUrl = Bun.env.REDIS_URL ?? "redis://api-juguete-dragonfly:6379";
 
 const redis = createClient({
   url: redisUrl,
