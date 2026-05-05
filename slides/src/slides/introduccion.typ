@@ -184,7 +184,7 @@ Hay varias formas de interactuar con una API RESTful, algunas de las más comune
 
 Levantamos un servidor, este expone una API RESTful lista para usar. La idea de este ejercicio es familiarizarse con alguna forma para interactuar con la API (terminal, cliente HTTP o documentación interactiva) y probar los distintos endpoints que expone la API.
 
-Esta API RESTful expone:
+Levantamos una API RESTful en #link("https://taller-apis.cubawiki.com.ar/docs")[*taller-apis.cubawiki.com.ar*], esta API expone:
 
 - `/items`: permite solicitudes `GET` y `POST`.
 - `/items/{id}`: permite solicitudes `GET`, `PUT`, `PATCH` y `DELETE`.
